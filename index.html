@@ -754,10 +754,179 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
   .welcome-skip:hover{opacity:1;}
   .welcome-rule-line-bottom{width:1px;height:44px;background:linear-gradient(to top,transparent,var(--gold-dim));margin-top:22px;}
 
+/* ══════════════════════════════════════════
+   MOBILE / RESPONSIVE
+   ══════════════════════════════════════════ */
+@media (max-width: 700px) {
+
+  :root { --sidebar-w: 100vw; }
+
+  /* Stack layout vertically */
+  #shell {
+    flex-direction: column;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  /* Sidebar becomes a slide-down drawer */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    width: 100% !important; min-width: 0 !important;
+    height: auto; max-height: 70vh;
+    z-index: 500;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    transform: translateY(-110%);
+    transition: transform .25s ease;
+    box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  }
+  #sidebar.mobile-open {
+    transform: translateY(0);
+  }
+  #sidebar.collapsed { width: 100% !important; }
+  #sidebar-toggle { display: none; }
+  #sidebar-collapsed-label { display: none !important; }
+  #sidebar-inner {
+    height: 100% !important;
+    max-height: calc(70vh - 0px);
+  }
+
+  /* Main panel takes full screen */
+  #main-panel {
+    flex: 1; width: 100%; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+
+  /* Compact mobile header */
+  header {
+    padding: 8px 12px 6px;
+    gap: 6px; flex-wrap: nowrap;
+    overflow: hidden;
+  }
+  .header-title { font-size: .78rem; }
+  .header-title span { display: none; }
+
+  /* Hide desktop nav elements, show mobile toggle */
+  #rule-select, #sec-select, #ss-avg { display: none; }
+
+  /* Mobile nav bar */
+  #mobile-nav {
+    display: flex !important;
+    align-items: center; gap: 6px;
+    flex: 1; justify-content: flex-end;
+  }
+  #mobile-sidebar-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 4px; color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: .65rem; padding: 4px 8px;
+    cursor: pointer; white-space: nowrap;
+  }
+  #mobile-sidebar-btn.active {
+    background: var(--gold); color: #0e0d0b;
+    border-color: var(--gold);
+  }
+
+  /* Scrollable main content */
+  main {
+    padding: 14px 14px 80px;
+    overflow-y: auto; flex: 1;
+  }
+
+  /* Prompt card */
+  .prompt-card { padding: 14px 16px; }
+  .prompt-title { font-size: 1.05rem; }
+
+  /* Textarea */
+  textarea {
+    min-height: 120px;
+    font-size: .95rem;
+    padding: 10px 14px;
+  }
+
+  /* Button row — wrap and smaller */
+  .btn-row {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .btn-row button { font-size: .68rem; padding: 6px 10px; }
+  .btn-row .counter { display: none; }
+  kbd { display: none; }
+
+  /* Feedback */
+  .score-badge { font-size: 1.2rem; min-width: 44px; }
+  .diff-body { font-size: .88rem; padding: 12px 14px; }
+
+  /* Reference panel — full screen overlay */
+  #ref-panel {
+    position: fixed !important;
+    top: 0; right: 0; bottom: 0;
+    width: 0 !important; min-width: 0 !important;
+    z-index: 600;
+    transition: width .25s ease;
+  }
+  #ref-panel.open {
+    width: 100% !important; min-width: 0 !important;
+  }
+  #ref-inner { width: 100vw !important; }
+  #ref-toggle-btn {
+    bottom: 16px; top: auto;
+    transform: none;
+    writing-mode: horizontal-tb;
+    padding: 10px 14px;
+    font-size: .62rem;
+    border-radius: 8px 0 0 8px;
+  }
+
+  /* Game modal */
+  #game-modal {
+    max-width: 100%;
+    max-height: 95dvh;
+    border-radius: 12px 12px 0 0;
+  }
+  #game-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .g-tab { font-size: .56rem; padding: 8px 2px; }
+  .game-choices { grid-template-columns: 1fr; gap: 6px; }
+  #game-body { padding: 14px 16px; }
+  #hard-body { padding: 14px 16px !important; }
+  #arrange-body { padding: 14px 16px !important; }
+
+  /* Help modal */
+  #help-overlay > div {
+    max-width: 100%;
+    border-radius: 12px 12px 0 0;
+    max-height: 90dvh;
+  }
+  /* Help overlay sticks to bottom */
+  #help-overlay {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+
+  /* Welcome page */
+  .welcome-card { max-width: 100%; padding: 0 20px; }
+  .welcome-title { font-size: 2.2rem; }
+
+  /* Sidebar overlay backdrop */
+  #sidebar-backdrop {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 499;
+  }
+  #sidebar-backdrop.active { display: block; }
+}
+
 </style>
 </head>
 <body>
 <div id="shell">
+  <div id="sidebar-backdrop"></div>
 
   <!-- ── WELCOME PAGE ── -->
   <div id="welcome-overlay">
@@ -910,6 +1079,12 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
         <button class="btn-ghost" id="game-btn" style="padding:4px 9px;font-size:.68rem;color:var(--gold);border-color:var(--gold-dim);" title="Guess the Rule &amp; Section game">⚡ Game</button>
         <button class="btn-ghost" id="help-btn" style="padding:4px 9px;font-size:.68rem;" title="Instructions">? Help</button>
         <button class="btn-ghost" id="theme-btn" style="padding:4px 9px;font-size:.68rem;">☀</button>
+      </div>
+      <!-- Mobile nav -->
+      <div id="mobile-nav" style="display:none;">
+        <button class="btn-ghost" id="theme-btn-mobile" style="padding:4px 8px;font-size:.68rem;">☀</button>
+        <button class="btn-ghost" id="game-btn-mobile" style="padding:4px 8px;font-size:.68rem;color:var(--gold);border-color:var(--gold-dim);">⚡</button>
+        <button id="mobile-sidebar-btn">☰ Progress</button>
       </div>
       <div class="progress-wrap" style="width:100%">
         <div class="progress-fill" id="progress-fill" style="width:0%"></div>
@@ -2288,6 +2463,52 @@ updateSessionStats();
   ob.addEventListener('click', show); c1.addEventListener('click', hide); c2.addEventListener('click', hide);
   ov.addEventListener('click', function(e){ if(e.target===ov) hide(); });
   document.addEventListener('keydown', function(e){ if(e.key==='Escape'&&ov.style.display==='flex') hide(); });
+})();
+
+// ── MOBILE ────────────────────────────────────────────────────────────────────
+(function() {
+  var sidebar     = document.getElementById('sidebar');
+  var backdrop    = document.getElementById('sidebar-backdrop');
+  var toggleBtn   = document.getElementById('mobile-sidebar-btn');
+  var themeMobile = document.getElementById('theme-btn-mobile');
+  var gameMobile  = document.getElementById('game-btn-mobile');
+  var gameBtn     = document.getElementById('game-btn');
+  var themeBtn    = document.getElementById('theme-btn');
+
+  function isMobile() { return window.innerWidth <= 700; }
+
+  function openSidebar() {
+    sidebar.classList.add('mobile-open');
+    backdrop.classList.add('active');
+    if (toggleBtn) { toggleBtn.classList.add('active'); toggleBtn.textContent = '✕ Close'; }
+  }
+  function closeSidebar() {
+    sidebar.classList.remove('mobile-open');
+    backdrop.classList.remove('active');
+    if (toggleBtn) { toggleBtn.classList.remove('active'); toggleBtn.textContent = '☰ Progress'; }
+  }
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function() {
+      if (sidebar.classList.contains('mobile-open')) closeSidebar();
+      else openSidebar();
+    });
+  }
+  if (backdrop) backdrop.addEventListener('click', closeSidebar);
+
+  // Wire mobile theme/game buttons to the same handlers
+  if (themeMobile && themeBtn) {
+    themeMobile.addEventListener('click', function() { themeBtn.click(); });
+  }
+  if (gameMobile && gameBtn) {
+    gameMobile.addEventListener('click', function() { gameBtn.click(); });
+  }
+
+  // Close sidebar on provision navigation (mobile)
+  document.addEventListener('click', function(e) {
+    if (!isMobile()) return;
+    if (e.target.closest('.tracker-item')) closeSidebar();
+  });
 })();
 
 
