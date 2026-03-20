@@ -679,7 +679,7 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
   .wn-desc{font-family:'EB Garamond',Georgia,serif;font-size:.82rem;color:var(--muted);font-style:italic;}
   #welcome-overlay{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:32px;transition:opacity .5s ease;}
   #welcome-overlay.hidden{opacity:0;pointer-events:none;}
-  .welcome-card{max-width:380px;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;}
+  .welcome-card{max-width:460px;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;}
   .welcome-rule-line{width:1px;height:44px;background:linear-gradient(to bottom,transparent,var(--gold-dim));margin-bottom:22px;}
   .welcome-eyebrow{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:13px;}
   .welcome-title{font-family:'EB Garamond',Georgia,serif;font-size:2.8rem;font-weight:600;color:var(--text);line-height:1;letter-spacing:-.02em;margin-bottom:8px;}
@@ -712,8 +712,302 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
     .g-tab{font-size:.52rem;padding:8px 2px;}.game-choices{grid-template-columns:1fr;gap:6px;}
     #game-body,#hard-body,#arrange-body,#fitb-body{padding:14px 16px!important;}
     #help-overlay{align-items:flex-end!important;padding:0!important;}#help-overlay > div{max-width:100%;border-radius:12px 12px 0 0;max-height:90dvh;}
-    .welcome-card{max-width:100%;padding:0 20px;}.welcome-title{font-size:2.2rem;}
+    .welcome-card{max-width:100%;padding:0 16px;}.welcome-title{font-size:2.2rem;}
   }
+
+  /* ── FLASHCARDS ── */
+  #flash-overlay {
+    display: none; position: fixed; inset: 0; z-index: 8500;
+    background: rgba(0,0,0,.78); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  #flash-modal {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; width: 100%; max-width: 560px;
+    display: flex; flex-direction: column; max-height: 90vh; overflow: hidden;
+  }
+  #flash-header {
+    padding: 12px 16px 10px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+  }
+  #flash-header-title {
+    font-family: 'DM Mono', monospace; font-size: .7rem;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--gold); flex: 1;
+  }
+  #flash-mode-tabs {
+    display: flex; border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  .flash-tab {
+    flex: 1; padding: 9px 4px;
+    font-family: 'DM Mono', monospace; font-size: .63rem;
+    letter-spacing: .05em; text-transform: uppercase;
+    background: transparent; border: none; color: var(--muted);
+    cursor: pointer; border-bottom: 2px solid transparent; transition: color .15s;
+  }
+  .flash-tab:hover { color: var(--text); }
+  .flash-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  #flash-body {
+    padding: 24px 24px 16px; display: flex; flex-direction: column;
+    align-items: center; gap: 16px; overflow-y: auto; flex: 1;
+  }
+  #flash-counter-display {
+    font-family: 'DM Mono', monospace; font-size: .65rem;
+    color: var(--muted); align-self: flex-end;
+  }
+  /* The card */
+  .flash-card-wrap {
+    width: 100%; perspective: 1000px; cursor: pointer;
+  }
+  .flash-card {
+    width: 100%; min-height: 200px;
+    position: relative; transform-style: preserve-3d;
+    transition: transform .45s ease; border-radius: 8px;
+  }
+  .flash-card.flipped { transform: rotateY(180deg); }
+  .flash-face {
+    position: absolute; inset: 0; backface-visibility: hidden;
+    background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 24px 22px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; gap: 8px;
+  }
+  .flash-face.back { transform: rotateY(180deg); }
+  .flash-face-label {
+    font-family: 'DM Mono', monospace; font-size: .6rem;
+    color: var(--gold-dim); letter-spacing: .1em; text-transform: uppercase;
+  }
+  .flash-face-title {
+    font-size: 1.2rem; font-weight: 600; color: var(--text); line-height: 1.3;
+  }
+  .flash-face-rule {
+    font-family: 'DM Mono', monospace; font-size: .65rem; color: var(--muted);
+  }
+  .flash-face-answer {
+    font-size: .92rem; line-height: 1.8; color: var(--text);
+    text-align: left; max-height: 240px; overflow-y: auto;
+  }
+  .flash-tap-hint {
+    font-family: 'DM Mono', monospace; font-size: .6rem;
+    color: var(--muted); font-style: italic;
+  }
+  /* Rating buttons */
+  .flash-rating {
+    display: flex; gap: 8px; width: 100%;
+  }
+  .flash-rate-btn {
+    flex: 1; padding: 11px 6px; border: 1.5px solid var(--border);
+    border-radius: 6px; background: var(--bg);
+    font-family: 'DM Mono', monospace; font-size: .68rem;
+    font-weight: 600; cursor: pointer; transition: all .15s;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+  }
+  .flash-rate-btn .rb-icon { font-size: 1.1rem; }
+  .flash-rate-btn.rb-got   { color: var(--green); border-color: var(--green); }
+  .flash-rate-btn.rb-almost{ color: var(--amber); border-color: var(--amber); }
+  .flash-rate-btn.rb-missed{ color: var(--red);   border-color: var(--red); }
+  .flash-rate-btn:hover { opacity: .8; }
+  /* Progress bar */
+  .flash-progress-bar {
+    width: 100%; height: 4px; background: var(--border);
+    border-radius: 2px; overflow: hidden;
+  }
+  .flash-progress-fill {
+    height: 100%; background: var(--gold);
+    transition: width .3s ease; border-radius: 2px;
+  }
+  /* Session summary */
+  #flash-summary {
+    display: none; flex-direction: column; align-items: center;
+    gap: 12px; padding: 12px 0;
+  }
+  .flash-sum-title {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 1.3rem; color: var(--text); font-weight: 600;
+  }
+  .flash-sum-stats {
+    display: flex; gap: 16px;
+  }
+  .flash-sum-stat {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+  }
+  .flash-sum-num { font-family: 'DM Mono', monospace; font-size: 1.4rem; font-weight: 500; }
+  .flash-sum-lbl { font-family: 'DM Mono', monospace; font-size: .58rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+  #flash-footer {
+    padding: 10px 20px 14px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
+  }
+  #flash-close-btn {
+    background: none; border: none; color: var(--muted);
+    font-size: 1rem; cursor: pointer; padding: 0;
+  }
+  #flash-close-btn:hover { color: var(--text); }
+
+  /* ── PRACTICE MODE ── */
+  #practice-overlay {
+    display: none; position: fixed; inset: 0; z-index: 8200;
+    background: var(--bg); flex-direction: column;
+  }
+  #practice-header {
+    padding: 10px 20px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+    background: var(--surface);
+  }
+  #practice-title {
+    font-family: 'DM Mono', monospace; font-size: .68rem;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--gold); flex: 1;
+  }
+  #practice-nav-info {
+    font-family: 'DM Mono', monospace; font-size: .65rem; color: var(--muted);
+  }
+  #practice-close-btn {
+    background: none; border: none; color: var(--muted);
+    font-size: 1rem; cursor: pointer; padding: 0;
+  }
+  #practice-close-btn:hover { color: var(--text); }
+  #practice-breadcrumb {
+    padding: 8px 20px; border-bottom: 1px solid var(--border);
+    font-family: 'DM Mono', monospace; font-size: .65rem;
+    color: var(--gold-dim); letter-spacing: .06em; text-transform: uppercase;
+    background: var(--surface); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  #practice-body {
+    display: flex; flex: 1; overflow: hidden; gap: 0;
+  }
+  /* Left — typing pane */
+  #practice-left {
+    flex: 1; display: flex; flex-direction: column;
+    padding: 20px; gap: 12px; border-right: 1px solid var(--border);
+    overflow: hidden;
+  }
+  #practice-left-label {
+    font-family: 'DM Mono', monospace; font-size: .62rem;
+    color: var(--muted); letter-spacing: .08em; text-transform: uppercase;
+  }
+  #practice-textarea {
+    flex: 1; width: 100%; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text); font-family: 'EB Garamond', Georgia, serif;
+    font-size: 1rem; line-height: 1.8; padding: 14px 16px;
+    resize: none; outline: none; transition: border-color .2s;
+  }
+  #practice-textarea:focus { border-color: var(--gold-dim); }
+  #practice-textarea::placeholder { color: var(--muted); font-style: italic; }
+  .practice-btn-row {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  #practice-clear-btn {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); font-family: 'DM Mono', monospace;
+    font-size: .68rem; padding: 7px 14px; border-radius: 4px; cursor: pointer;
+    transition: all .15s;
+  }
+  #practice-clear-btn:hover { border-color: var(--text); color: var(--text); }
+  #practice-recall-btn {
+    background: var(--gold); color: #0e0d0b;
+    font-family: 'DM Mono', monospace; font-size: .68rem; font-weight: 600;
+    border: none; border-radius: 4px; padding: 7px 14px; cursor: pointer;
+    transition: opacity .15s;
+  }
+  #practice-recall-btn:hover { opacity: .87; }
+  #practice-next-btn {
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--border); font-family: 'DM Mono', monospace;
+    font-size: .68rem; padding: 7px 14px; border-radius: 4px; cursor: pointer;
+    margin-left: auto; transition: border-color .15s;
+  }
+  #practice-next-btn:hover { border-color: var(--gold-dim); }
+  #practice-prev-btn {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); font-family: 'DM Mono', monospace;
+    font-size: .68rem; padding: 7px 14px; border-radius: 4px; cursor: pointer;
+  }
+  #practice-prev-btn:hover { color: var(--text); }
+  /* Right — provision pane */
+  #practice-right {
+    flex: 1; display: flex; flex-direction: column;
+    padding: 20px; gap: 10px; overflow-y: auto;
+  }
+  #practice-right-label {
+    font-family: 'DM Mono', monospace; font-size: .62rem;
+    color: var(--muted); letter-spacing: .08em; text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  #practice-provision-text {
+    font-size: .92rem; line-height: 1.75; color: var(--text);
+  }
+  /* Recall pane (shown instead of right when testing) */
+  #practice-recall-pane {
+    display: none; flex: 1; flex-direction: column;
+    padding: 20px; gap: 12px; overflow-y: auto;
+    border-left: 1px solid var(--border);
+  }
+  #practice-recall-pane .recall-label {
+    font-family: 'DM Mono', monospace; font-size: .62rem;
+    color: var(--gold-dim); letter-spacing: .08em; text-transform: uppercase;
+  }
+  #practice-recall-title {
+    font-size: 1.1rem; font-weight: 600; color: var(--text);
+  }
+  #practice-recall-sub {
+    font-family: 'DM Mono', monospace; font-size: .65rem; color: var(--muted);
+  }
+  #practice-recall-textarea {
+    flex: 1; width: 100%; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text); font-family: 'EB Garamond', Georgia, serif;
+    font-size: 1rem; line-height: 1.8; padding: 14px 16px;
+    resize: none; outline: none; min-height: 140px;
+  }
+  #practice-recall-textarea:focus { border-color: var(--gold-dim); }
+  #practice-check-btn {
+    background: var(--gold); color: #0e0d0b;
+    font-family: 'DM Mono', monospace; font-size: .72rem; font-weight: 600;
+    border: none; border-radius: 5px; padding: 10px 0; width: 100%; cursor: pointer;
+  }
+  #practice-score-panel {
+    display: none; flex-direction: column; gap: 10px;
+  }
+  .pr-score-bar {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 7px; padding: 12px 16px;
+  }
+  .pr-score-badge {
+    font-family: 'DM Mono', monospace; font-size: 1.4rem;
+    font-weight: 500; min-width: 52px; text-align: center;
+  }
+  .pr-score-text { font-size: .9rem; line-height: 1.4; }
+  .pr-score-sub { font-size: .8rem; color: var(--muted); font-style: italic; }
+  .pr-diff { background: var(--surface); border: 1px solid var(--border); border-radius: 7px; overflow: hidden; }
+  .pr-diff-header { padding: 7px 16px; border-bottom: 1px solid var(--border); font-family: 'DM Mono', monospace; font-size: .65rem; color: var(--muted); }
+  .pr-diff-body { padding: 14px 18px; font-size: .95rem; line-height: 1.9; white-space: pre-wrap; word-break: break-word; }
+  .pr-back-btn {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    font-family: 'DM Mono', monospace; font-size: .68rem;
+    padding: 7px 14px; border-radius: 4px; cursor: pointer;
+  }
+  #practice-good-next {
+    background: var(--green); color: #fff;
+    font-family: 'DM Mono', monospace; font-size: .72rem; font-weight: 600;
+    border: none; border-radius: 5px; padding: 10px 0; width: 100%; cursor: pointer;
+    display: none;
+  }
+  @media(max-width:700px) {
+    #practice-body { flex-direction: column; }
+    #practice-left { border-right: none; border-bottom: 1px solid var(--border); flex: none; min-height: 40vh; }
+    #practice-right, #practice-recall-pane { flex: none; min-height: 40vh; }
+  }
+
+  .welcome-btn{background:var(--gold);color:#0e0d0b;font-family:'DM Mono',monospace;font-size:.74rem;font-weight:600;letter-spacing:.08em;border:none;border-radius:5px;padding:12px 0;cursor:pointer;width:100%;transition:opacity .15s,transform .1s;margin-bottom:14px;}
+  .welcome-btn:hover{opacity:.87;}
+  .welcome-btn:active{transform:scale(.98);}
+  .wn-feat-btn:hover{border-color:var(--gold-dim)!important;background:color-mix(in srgb,var(--gold) 6%,var(--bg))!important;}
+  /* ── REAL-TIME TYPING ── */
+  .rtt-correct { color: var(--green); }
+  .rtt-wrong   { color: var(--red); background: color-mix(in srgb,var(--red) 12%,transparent); border-radius: 2px; }
+  .rtt-cursor  { border-right: 2px solid var(--gold); animation: rtt-blink .8s step-end infinite; }
+  @keyframes rtt-blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
 </style>
 </head>
@@ -728,16 +1022,55 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
       <div class="welcome-title">Recall Trainer</div>
       <div class="welcome-tagline">271 provisions &nbsp;·&nbsp; Rules 1&#8211;33</div>
       <div class="welcome-byline">DrewRL</div>
+      <div style="font-family:'EB Garamond',Georgia,serif;font-size:.95rem;color:var(--muted);font-style:italic;margin-bottom:28px;line-height:1.5;text-align:center;">A study app for the Rules of Court.<br>Memorize provisions through active recall.</div>
       <div class="welcome-stats">
         <div class="welcome-stat"><div class="welcome-stat-num" id="w-done">0</div><div class="welcome-stat-lbl">Attempted</div></div>
         <div class="welcome-stat"><div class="welcome-stat-num" id="w-avg">&#8212;</div><div class="welcome-stat-lbl">Avg Score</div></div>
         <div class="welcome-stat"><div class="welcome-stat-num" id="w-mastered">0</div><div class="welcome-stat-lbl">Mastered</div></div>
       </div>
-      <div class="welcome-nav">
-        <button class="welcome-nav-btn" id="wn-recall"><span class="wn-icon">&#9998;</span><span class="wn-label">Recall</span><span class="wn-desc">Type from memory</span></button>
-        <button class="welcome-nav-btn" id="wn-game"><span class="wn-icon">&#9889;</span><span class="wn-label">Game</span><span class="wn-desc">Easy &middot; Hard &middot; Arrange &middot; Fill Blanks</span></button>
-        <button class="welcome-nav-btn" id="wn-progress"><span class="wn-icon">&#9679;</span><span class="wn-label">Progress</span><span class="wn-desc">Your score tracker</span></button>
-        <button class="welcome-nav-btn" id="wn-reference"><span class="wn-icon">&#128218;</span><span class="wn-label">Reference</span><span class="wn-desc">Browse provisions</span></button>
+      <!-- Primary CTA -->
+      <button class="welcome-btn" id="welcome-start-btn">Begin Session &#8594;</button>
+
+      <!-- Features dropdown -->
+      <div id="features-dropdown-wrap" style="width:100%;margin-bottom:10px;">
+        <button id="features-toggle-btn" style="width:100%;background:transparent;border:1px solid var(--border);border-radius:5px;padding:9px 14px;font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:space-between;letter-spacing:.06em;text-transform:uppercase;transition:border-color .15s;">
+          <span>What&#39;s in this app?</span>
+          <span id="features-chevron">&#8964;</span>
+        </button>
+        <div id="features-list" style="display:none;border:1px solid var(--border);border-top:none;border-radius:0 0 5px 5px;background:var(--surface);padding:14px 12px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+            <button class="wn-feat-btn" id="wn-recall" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;background:var(--bg);border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:border-color .15s,background .15s;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dim)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gold-dim);letter-spacing:.07em;text-transform:uppercase;">Recall</span>
+              <span style="font-family:'EB Garamond',serif;font-size:.8rem;color:var(--muted);font-style:italic;line-height:1.3;">Type from memory, get scored</span>
+            </button>
+            <button class="wn-feat-btn" id="wn-practice" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;background:var(--bg);border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:border-color .15s,background .15s;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dim)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gold-dim);letter-spacing:.07em;text-transform:uppercase;">Practice</span>
+              <span style="font-family:'EB Garamond',serif;font-size:.8rem;color:var(--muted);font-style:italic;line-height:1.3;">Read &amp; retype until it sticks</span>
+            </button>
+            <button class="wn-feat-btn" id="wn-game" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;background:var(--bg);border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:border-color .15s,background .15s;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dim)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gold-dim);letter-spacing:.07em;text-transform:uppercase;">Game</span>
+              <span style="font-family:'EB Garamond',serif;font-size:.8rem;color:var(--muted);font-style:italic;line-height:1.3;">MC, type, arrange, fill blanks</span>
+            </button>
+            <button class="wn-feat-btn" id="wn-cards" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;background:var(--bg);border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:border-color .15s,background .15s;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dim)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="13" rx="2"/><path d="M6 7V5a2 2 0 012-2h12a2 2 0 012 2v13a2 2 0 01-2 2h-2"/></svg>
+              <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gold-dim);letter-spacing:.07em;text-transform:uppercase;">Flashcards</span>
+              <span style="font-family:'EB Garamond',serif;font-size:.8rem;color:var(--muted);font-style:italic;line-height:1.3;">Flip cards &amp; rate yourself</span>
+            </button>
+            <button class="wn-feat-btn" id="wn-progress" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;background:var(--bg);border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:border-color .15s,background .15s;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dim)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gold-dim);letter-spacing:.07em;text-transform:uppercase;">Progress</span>
+              <span style="font-family:'EB Garamond',serif;font-size:.8rem;color:var(--muted);font-style:italic;line-height:1.3;">Track all 271 provisions</span>
+            </button>
+            <button class="wn-feat-btn" id="wn-reference" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;background:var(--bg);border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:border-color .15s,background .15s;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dim)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+              <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gold-dim);letter-spacing:.07em;text-transform:uppercase;">Reference</span>
+              <span style="font-family:'EB Garamond',serif;font-size:.8rem;color:var(--muted);font-style:italic;line-height:1.3;">Browse &amp; search provisions</span>
+            </button>
+          </div>
+        </div>
       </div>
       <div class="welcome-rule-line-bottom"></div>
     </div>
@@ -846,15 +1179,29 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
     <header>
       <div class="header-title">Rules of Court<span>2019 Amendments · Rules 1–33</span></div>
       <span style="font-family:'DM Mono',monospace;font-size:.56rem;color:var(--muted);opacity:.35;letter-spacing:.12em;text-transform:uppercase;user-select:none;">DrewRL</span>
-      <div class="nav-bar" style="flex:1;justify-content:flex-end;">
+      <div class="nav-bar" style="flex:1;justify-content:flex-end;gap:6px;">
         <select id="rule-select"></select>
         <select id="sec-select"></select>
         <span id="ss-avg" style="font-family:'DM Mono',monospace;font-size:.7rem;color:var(--muted);white-space:nowrap;">avg —</span>
         <button id="game-btn" style="background:var(--gold);color:#0e0d0b;border:none;border-radius:5px;padding:5px 13px;font-family:'DM Mono',monospace;font-size:.7rem;font-weight:600;cursor:pointer;" title="Game">&#9889; Game</button>
-        <button id="progress-btn" style="background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:5px;padding:5px 13px;font-family:'DM Mono',monospace;font-size:.7rem;font-weight:500;cursor:pointer;" title="Progress">&#9679; Progress</button>
-        <button class="btn-ghost" id="help-btn" style="padding:4px 9px;font-size:.68rem;" title="Instructions">? Help</button>
-        <button class="btn-ghost" id="theme-btn" style="padding:4px 9px;font-size:.68rem;">☀</button>
-      
+        <button id="practice-btn" style="background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:5px;padding:5px 13px;font-family:'DM Mono',monospace;font-size:.7rem;font-weight:500;cursor:pointer;" title="Practice mode">&#9998; Practice</button>
+        <!-- More dropdown -->
+        <div style="position:relative;" id="more-menu-wrap">
+          <button id="more-btn" style="background:var(--surface);color:var(--muted);border:1px solid var(--border);border-radius:5px;padding:5px 10px;font-family:'DM Mono',monospace;font-size:.7rem;cursor:pointer;" title="More">&#8943;</button>
+          <div id="more-dropdown" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--surface);border:1px solid var(--border);border-radius:7px;min-width:160px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.25);overflow:hidden;">
+            <button class="more-item" id="flash-btn" style="display:flex;align-items:center;gap:8px;width:100%;padding:10px 14px;background:none;border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.68rem;cursor:pointer;text-align:left;">
+              <span>&#9646;&#9646;</span> Flashcards
+            </button>
+            <button class="more-item" id="progress-btn" style="display:flex;align-items:center;gap:8px;width:100%;padding:10px 14px;background:none;border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.68rem;cursor:pointer;text-align:left;">
+              <span>&#9679;</span> Progress
+            </button>
+            <button class="more-item" id="help-btn" style="display:flex;align-items:center;gap:8px;width:100%;padding:10px 14px;background:none;border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.68rem;cursor:pointer;text-align:left;">
+              <span>?</span> How to use
+            </button>
+
+          </div>
+        </div>
+        <button class="btn-ghost" id="theme-btn" style="padding:4px 9px;font-size:.68rem;" title="Toggle theme">&#9728;</button>
       </div>
       <div id="mobile-nav">
         <button class="btn-ghost" id="theme-btn-mobile" style="padding:4px 8px;font-size:.68rem;">☀</button>
@@ -1018,6 +1365,169 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
 
   <!-- Fixed side toggle button -->
   <button id="ref-toggle-btn" title="Toggle reference panel">REFERENCE</button>
+
+  <!-- ── FLASHCARDS ── -->
+  <div id="flash-overlay">
+    <div id="flash-modal">
+      <div id="flash-header">
+        <div id="flash-header-title">&#9646;&#9646; Flashcards</div>
+        <div style="font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted);">
+          <span id="flash-got-count" style="color:var(--green);">0</span> got &nbsp;
+          <span id="flash-almost-count" style="color:var(--amber);">0</span> almost &nbsp;
+          <span id="flash-missed-count" style="color:var(--red);">0</span> missed
+        </div>
+        <button id="flash-close-btn" title="Close">&#10005;</button>
+      </div>
+      <div id="flash-mode-tabs">
+        <button class="flash-tab active" data-fmode="title">Title &#8594; Provision</button>
+        <button class="flash-tab" data-fmode="reverse">Provision &#8594; Title</button>
+      </div>
+      <div id="flash-body">
+        <div id="flash-counter-display">1 / 271</div>
+        <div class="flash-progress-bar"><div class="flash-progress-fill" id="flash-progress-fill" style="width:0%"></div></div>
+        <div class="flash-card-wrap" id="flash-card-wrap">
+          <div class="flash-card" id="flash-card">
+            <div class="flash-face front">
+              <div class="flash-face-label" id="flash-front-label">Section Title</div>
+              <div class="flash-face-title" id="flash-front-content">Loading...</div>
+              <div class="flash-face-rule" id="flash-front-sub"></div>
+              <div class="flash-tap-hint">tap to flip</div>
+            </div>
+            <div class="flash-face back">
+              <div class="flash-face-label" id="flash-back-label">Provision</div>
+              <div class="flash-face-answer" id="flash-back-content"></div>
+            </div>
+          </div>
+        </div>
+        <div class="flash-rating" id="flash-rating" style="display:none;">
+          <button class="flash-rate-btn rb-got" id="rb-got"><span class="rb-icon">&#10003;</span>Got it</button>
+          <button class="flash-rate-btn rb-almost" id="rb-almost"><span class="rb-icon">&#8776;</span>Almost</button>
+          <button class="flash-rate-btn rb-missed" id="rb-missed"><span class="rb-icon">&#10007;</span>Missed</button>
+        </div>
+        <div id="flash-summary">
+          <div class="flash-sum-title">Session complete!</div>
+          <div class="flash-sum-stats">
+            <div class="flash-sum-stat"><div class="flash-sum-num" id="sum-got" style="color:var(--green)">0</div><div class="flash-sum-lbl">Got it</div></div>
+            <div class="flash-sum-stat"><div class="flash-sum-num" id="sum-almost" style="color:var(--amber)">0</div><div class="flash-sum-lbl">Almost</div></div>
+            <div class="flash-sum-stat"><div class="flash-sum-num" id="sum-missed" style="color:var(--red)">0</div><div class="flash-sum-lbl">Missed</div></div>
+          </div>
+          <button id="flash-restart-btn" style="background:var(--gold);color:#0e0d0b;font-family:'DM Mono',monospace;font-size:.74rem;font-weight:600;border:none;border-radius:5px;padding:10px 28px;cursor:pointer;margin-top:4px;">Restart &#8594;</button>
+        </div>
+      </div>
+      <div id="flash-footer">
+        <div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);">
+          <span id="flash-mode-label">Title &#8594; Provision</span>
+        </div>
+        <button id="flash-skip-btn" style="background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.65rem;padding:5px 14px;border-radius:4px;cursor:pointer;">Skip &#8594;</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── PRACTICE MODE ── -->
+  <div id="practice-overlay">
+    <div id="practice-header">
+      <div id="practice-title">&#9998; Practice Mode</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-left:auto;">
+        <!-- Overall stats -->
+        <div style="display:flex;gap:10px;font-family:'DM Mono',monospace;font-size:.62rem;">
+          <span style="color:var(--muted);"><span id="pr-overall-done" style="color:var(--text);">0</span>/271</span>
+          <span id="pr-overall-avg" style="color:var(--muted);">avg —</span>
+          <span style="color:var(--muted);">&#8805;80%: <span id="pr-overall-mastered" style="color:var(--green);">0</span></span>
+        </div>
+        <div style="width:1px;height:16px;background:var(--border);"></div>
+        <button id="practice-main-btn" style="background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.65rem;padding:4px 10px;border-radius:4px;cursor:pointer;" title="Back to main page">&#8592; Main Page</button>
+        <button id="practice-close-btn" title="Close" style="background:none;border:none;color:var(--muted);font-size:1rem;cursor:pointer;padding:0;">&#10005;</button>
+      </div>
+    </div>
+    <div id="practice-breadcrumb" style="flex-direction:column;gap:6px;padding:8px 16px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <select id="pr-rule-select" style="background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.68rem;padding:4px 8px;border-radius:4px;outline:none;cursor:pointer;max-width:240px;"></select>
+        <select id="pr-sec-select" style="background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.68rem;padding:4px 8px;border-radius:4px;outline:none;cursor:pointer;flex:1;min-width:0;"></select>
+      </div>
+    </div>
+    <div style="padding:6px 16px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;gap:10px;">
+      <span id="pr-progress-label" style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);white-space:nowrap;">1 / 271</span>
+      <div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;">
+        <div id="pr-progress-fill" style="height:100%;background:var(--gold);transition:width .3s;width:0%;border-radius:3px;"></div>
+      </div>
+    </div>
+    <div id="practice-body">
+
+      <!-- SCREEN 1: Training (split) -->
+      <div id="practice-train-screen" style="display:flex;flex:1;overflow:hidden;">
+        <!-- LEFT: typing -->
+        <div id="practice-left">
+          <div id="practice-left-label" style="display:flex;align-items:center;justify-content:space-between;">
+            <span>Type the provision</span>
+            <span id="pr-left-rule-badge" style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gold-dim);letter-spacing:.06em;"></span>
+          </div>
+          <!-- Rule dots -->
+          <div style="margin-bottom:6px;">
+            <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">Rules</div>
+            <div id="pr-rule-list" style="display:flex;flex-wrap:wrap;gap:3px;"></div>
+          </div>
+          <!-- Section list for current rule -->
+          <div style="margin-bottom:4px;">
+            <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;" id="pr-sections-label">Sections</div>
+            <div id="pr-section-list" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;"></div>
+          </div>
+          <div style="position:relative;flex:1;display:flex;flex-direction:column;">
+            <textarea id="practice-textarea" placeholder="Start typing the provision from the right side. Read, then cover it mentally and type&#8230;" style="position:absolute;inset:0;opacity:0;z-index:2;resize:none;cursor:text;" spellcheck="false" autocorrect="off" autocapitalize="off"></textarea>
+            <div id="practice-display" style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;font-family:'EB Garamond',Georgia,serif;font-size:1rem;line-height:1.8;color:var(--text);overflow-y:auto;white-space:pre-wrap;word-break:break-word;cursor:text;min-height:120px;">
+              <span style="color:var(--muted);font-style:italic;">Start typing the provision from the right side. Read, then cover it mentally and type…</span>
+            </div>
+          </div>
+          <div class="practice-btn-row">
+            <button id="practice-prev-btn">&#8592; Prev</button>
+            <button id="practice-clear-btn">&#8635; Clear</button>
+            <button id="practice-recall-btn">&#9654; Test Recall</button>
+            <button id="practice-next-btn">Next &#8594;</button>
+          </div>
+        </div>
+        <!-- RIGHT: provision -->
+        <div id="practice-right">
+          <div id="practice-right-label">Provision (read &amp; retype)</div>
+          <div id="pr-right-title" style="margin-bottom:8px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;">
+              <div id="pr-right-rule" style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);letter-spacing:.07em;text-transform:uppercase;"></div>
+              <div id="pr-right-score" style="font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.04em;display:none;"></div>
+            </div>
+            <div id="pr-right-section" style="font-family:'EB Garamond',Georgia,serif;font-size:1.1rem;font-weight:600;color:var(--text);line-height:1.2;"></div>
+          </div>
+          <div id="practice-provision-text"></div>
+        </div>
+      </div>
+
+      <!-- SCREEN 2: Recall (full page) -->
+      <div id="practice-recall-screen" style="display:none;flex:1;flex-direction:column;overflow-y:auto;padding:32px;max-width:680px;margin:0 auto;gap:16px;width:100%;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;">Test Recall</div>
+            <div id="practice-recall-title" style="font-size:1.3rem;font-weight:600;color:var(--text);line-height:1.2;"></div>
+            <div id="practice-recall-sub" style="font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted);margin-top:4px;"></div>
+          </div>
+          <button id="pr-back-to-train-btn" style="background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.68rem;padding:7px 14px;border-radius:4px;cursor:pointer;white-space:nowrap;flex-shrink:0;">&#8592; Back to Training</button>
+        </div>
+        <textarea id="practice-recall-textarea" placeholder="Type the provision from memory&#8230;" style="flex:1;min-height:180px;"></textarea>
+        <button id="practice-check-btn">Check &#8594;</button>
+        <button id="practice-retry-recall-btn" style="display:none;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.68rem;padding:9px 0;width:100%;border-radius:5px;cursor:pointer;">&#8635; Try Again</button>
+        <div id="practice-score-panel">
+          <div class="pr-score-bar">
+            <div class="pr-score-badge" id="pr-badge">&#8211;</div>
+            <div class="pr-score-text"><strong id="pr-label"></strong><div class="pr-score-sub" id="pr-sub"></div></div>
+          </div>
+          <div class="pr-diff"><div class="pr-diff-header">Annotated provision</div><div class="pr-diff-body" id="pr-diff"></div></div>
+          <div style="display:flex;gap:8px;flex-direction:column;">
+            <button id="practice-good-next" style="display:none;background:var(--green);color:#fff;font-family:'DM Mono',monospace;font-size:.78rem;font-weight:700;border:none;border-radius:6px;padding:14px 0;width:100%;cursor:pointer;letter-spacing:.04em;box-shadow:0 2px 12px color-mix(in srgb,var(--green) 30%,transparent);">&#10003; Good &#8212; Next Section &#8594;</button>
+            <button class="pr-back-btn" id="pr-try-again-btn" style="width:100%;">&#8617; Keep Practising</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 
 
 </div>
@@ -2274,6 +2784,10 @@ updateSessionStats();
     }catch(e){}
   }
   loadStats();
+  // Start button
+  var sb=document.getElementById('welcome-start-btn');if(sb)sb.addEventListener('click',function(){dismiss();});
+
+  // Feature buttons (both in old nav if present and in new dropdown)
   var wn=document.getElementById('wn-recall');if(wn)wn.addEventListener('click',function(){dismiss();});
   var wg=document.getElementById('wn-game');if(wg)wg.addEventListener('click',function(){dismiss(function(){var b=document.getElementById('game-btn');if(b)b.click();});});
   var wp=document.getElementById('wn-progress');if(wp)wp.addEventListener('click',function(){
@@ -2285,6 +2799,8 @@ updateSessionStats();
     });
   });
   var wr=document.getElementById('wn-reference');if(wr)wr.addEventListener('click',function(){dismiss(function(){var b=document.getElementById('ref-toggle-btn');if(b)b.click();});});
+  var wc=document.getElementById('wn-cards');if(wc)wc.addEventListener('click',function(){dismiss(function(){var b=document.getElementById('flash-btn');if(b)b.click();});});
+  var wprac=document.getElementById('wn-practice');if(wprac)wprac.addEventListener('click',function(){dismiss(function(){var b=document.getElementById('practice-btn');if(b)b.click();});});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ov.style.display!=='none'&&!ov.classList.contains('hidden'))dismiss();});
 })();
 
@@ -2295,6 +2811,633 @@ updateSessionStats();
   if(ob)ob.addEventListener('click',show);if(c1)c1.addEventListener('click',hide);if(c2)c2.addEventListener('click',hide);
   if(ov)ov.addEventListener('click',function(e){if(e.target===ov)hide();});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ov&&ov.style.display==='flex')hide();});
+})();
+
+// ── FLASHCARDS ────────────────────────────────────────────────────────────────
+(function() {
+  var overlay     = document.getElementById('flash-overlay');
+  var openBtn     = document.getElementById('flash-btn');
+  var closeBtn    = document.getElementById('flash-close-btn');
+  var card        = document.getElementById('flash-card');
+  var cardWrap    = document.getElementById('flash-card-wrap');
+  var frontLabel  = document.getElementById('flash-front-label');
+  var frontContent= document.getElementById('flash-front-content');
+  var frontSub    = document.getElementById('flash-front-sub');
+  var backLabel   = document.getElementById('flash-back-label');
+  var backContent = document.getElementById('flash-back-content');
+  var rating      = document.getElementById('flash-rating');
+  var summary     = document.getElementById('flash-summary');
+  var counterEl   = document.getElementById('flash-counter-display');
+  var progressFill= document.getElementById('flash-progress-fill');
+  var gotCountEl  = document.getElementById('flash-got-count');
+  var almostEl    = document.getElementById('flash-almost-count');
+  var missedEl    = document.getElementById('flash-missed-count');
+  var modeLabel   = document.getElementById('flash-mode-label');
+  var restartBtn  = document.getElementById('flash-restart-btn');
+  var skipBtn     = document.getElementById('flash-skip-btn');
+  var flashTabs   = document.querySelectorAll('.flash-tab');
+
+  var flashMode   = 'title'; // 'title' or 'reverse'
+  var deck        = [];
+  var deckPos     = 0;
+  var flipped     = false;
+  var gotCount    = 0, almostCount = 0, missedCount = 0;
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length-1; i > 0; i--) {
+      var j = Math.floor(Math.random()*(i+1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function startSession() {
+    deck        = shuffle(PROMPTS.map(function(p,i){ return i; }));
+    deckPos     = 0;
+    gotCount    = 0; almostCount = 0; missedCount = 0;
+    flipped     = false;
+    summary.style.display  = 'none';
+    cardWrap.style.display = '';
+    rating.style.display   = 'none';
+    skipBtn.style.display  = '';
+    updateStats();
+    loadCard();
+  }
+
+  function loadCard() {
+    if (deckPos >= deck.length) { showSummary(); return; }
+    var p = PROMPTS[deck[deckPos]];
+    flipped = false;
+    card.classList.remove('flipped');
+    rating.style.display = 'none';
+
+    if (flashMode === 'title') {
+      frontLabel.textContent   = 'Section Title';
+      frontContent.textContent = p.section_title.replace(/\.$/, '');
+      frontSub.textContent     = 'Rule ' + p.rule + ' \u2014 ' + p.rule_title;
+      backLabel.textContent    = 'Provision';
+      backContent.textContent  = p.answer;
+    } else {
+      frontLabel.textContent   = 'Provision';
+      frontContent.textContent = '';
+      backLabel.textContent    = 'Section Title';
+      // Show truncated provision on front
+      var short = p.answer.length > 200 ? p.answer.substring(0,200)+'\u2026' : p.answer;
+      frontContent.style.fontSize = '.88rem';
+      frontContent.style.textAlign = 'left';
+      frontContent.style.lineHeight = '1.7';
+      frontContent.textContent = short;
+      frontSub.textContent = '';
+      backContent.textContent = p.section_title.replace(/\.$/, '') + '\n\nRule ' + p.rule + ' \u2014 ' + p.rule_title + ', \u00a7' + p.section;
+    }
+
+    counterEl.textContent = (deckPos+1) + ' / ' + deck.length;
+    progressFill.style.width = (deckPos / deck.length * 100).toFixed(1) + '%';
+  }
+
+  function flip() {
+    if (flipped) return;
+    flipped = true;
+    card.classList.add('flipped');
+    setTimeout(function() { rating.style.display = 'flex'; }, 300);
+  }
+
+  function rate(result) {
+    if (result === 'got')    gotCount++;
+    else if (result === 'almost') almostCount++;
+    else                     missedCount++;
+    updateStats();
+    deckPos++;
+    loadCard();
+  }
+
+  function skip() {
+    deckPos++;
+    loadCard();
+  }
+
+  function updateStats() {
+    gotCountEl.textContent  = gotCount;
+    almostEl.textContent    = almostCount;
+    missedEl.textContent    = missedCount;
+  }
+
+  function showSummary() {
+    cardWrap.style.display = 'none';
+    rating.style.display   = 'none';
+    skipBtn.style.display  = 'none';
+    progressFill.style.width = '100%';
+    counterEl.textContent = deck.length + ' / ' + deck.length;
+    document.getElementById('sum-got').textContent    = gotCount;
+    document.getElementById('sum-almost').textContent = almostCount;
+    document.getElementById('sum-missed').textContent = missedCount;
+    summary.style.display = 'flex';
+  }
+
+  // Tab switching
+  flashTabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      flashMode = tab.dataset.fmode;
+      flashTabs.forEach(function(t){ t.classList.remove('active'); });
+      tab.classList.add('active');
+      modeLabel.innerHTML = flashMode === 'title' ? 'Title &#8594; Provision' : 'Provision &#8594; Title';
+      startSession();
+    });
+  });
+
+  cardWrap.addEventListener('click', flip);
+  document.getElementById('rb-got').addEventListener('click',    function(){ rate('got'); });
+  document.getElementById('rb-almost').addEventListener('click', function(){ rate('almost'); });
+  document.getElementById('rb-missed').addEventListener('click', function(){ rate('missed'); });
+  skipBtn.addEventListener('click', skip);
+  restartBtn.addEventListener('click', startSession);
+
+  openBtn.addEventListener('click', function() {
+    overlay.style.display = 'flex';
+    startSession();
+  });
+  closeBtn.addEventListener('click', function() { overlay.style.display = 'none'; });
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.style.display = 'none'; });
+  document.addEventListener('keydown', function(e) {
+    if (overlay.style.display !== 'flex') return;
+    if (e.key === 'Escape') { overlay.style.display = 'none'; return; }
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); if (!flipped) flip(); }
+    if (e.key === '1') { if (flipped) rate('got'); }
+    if (e.key === '2') { if (flipped) rate('almost'); }
+    if (e.key === '3') { if (flipped) rate('missed'); }
+    if (e.key === 'ArrowRight') skip();
+  });
+})();
+
+// ── PRACTICE MODE ─────────────────────────────────────────────────────────────
+(function() {
+  var overlay      = document.getElementById('practice-overlay');
+  var openBtn      = document.getElementById('practice-btn');
+  var closeBtn     = document.getElementById('practice-close-btn');
+  // pr-breadcrumb removed (replaced by dropdowns)
+  // pr-section-title removed
+  var posEl        = document.getElementById('pr-pos');
+  var provText     = document.getElementById('practice-provision-text');
+  var textarea     = document.getElementById('practice-textarea');
+  var clearBtn     = document.getElementById('practice-clear-btn');
+  var recallBtn    = document.getElementById('practice-recall-btn');
+  var nextBtn      = document.getElementById('practice-next-btn');
+  var prevBtn      = document.getElementById('practice-prev-btn');
+  var trainScreen  = document.getElementById('practice-train-screen');
+  var recallScreen = document.getElementById('practice-recall-screen');
+  var rightPane    = document.getElementById('practice-right');
+  var recallTitle  = document.getElementById('practice-recall-title');
+  var recallSub    = document.getElementById('practice-recall-sub');
+  var recallTA     = document.getElementById('practice-recall-textarea');
+  var checkBtn     = document.getElementById('practice-check-btn');
+  var scorePanel   = document.getElementById('practice-score-panel');
+  var prBadge      = document.getElementById('pr-badge');
+  var prLabel      = document.getElementById('pr-label');
+  var prSub        = document.getElementById('pr-sub');
+  var prDiff       = document.getElementById('pr-diff');
+  var goodNextBtn  = document.getElementById('practice-good-next');
+  var tryAgainBtn  = document.getElementById('pr-try-again-btn');
+
+  var prPos = 0;
+
+  // Shared stop words + diff from main app
+  var PR_STOP = new Set(['a','an','the','of','or','and','in','to','by','as','at','on','is','be','it','its','he','she','his','her','may','shall','will','with','for','that','this','are','was','were','not','upon','from','such','any','all','but','if','no','only','also','each','their','same','either','other','both','nor','so','yet','even','than','then']);
+
+  function norm(w){ return w.toLowerCase().replace(/[^a-z0-9]/g,''); }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function smartDiff(correct, userInput) {
+    var userWords = new Set(userInput.split(/\s+/).map(norm).filter(function(w){ return w.length>1; }));
+    var html = '';
+    correct.split(/(\s+)/).forEach(function(token) {
+      if (/^\s+$/.test(token)) { html += token; return; }
+      var n = norm(token);
+      if (!n) { html += esc(token); return; }
+      if (userWords.has(n)) html += '<span class="d-add">' + esc(token) + '</span>';
+      else if (PR_STOP.has(n)) html += esc(token);
+      else html += '<span class="d-del">' + esc(token) + '</span>';
+    });
+    return html;
+  }
+
+  function formatProvisionText(text) {
+    function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    var s = esc(text);
+    // Break before (a)(b)...(j) sub-items
+    s = s.replace(/\s+\((a|b|c|d|e|f|g|h|i|j)\)\s/g, function(m, letter) {
+      return '<br><span style="display:inline-block;min-width:22px;color:var(--gold-dim);font-size:.8em;margin-right:4px">('+letter+')</span>';
+    });
+    // Break before numbered sub-items 1. 2. 3.
+    s = s.replace(/\s+(\d+)\. ([A-Z])/g, function(m, num, cap) {
+      return '<br><span style="display:inline-block;min-width:22px;color:var(--gold-dim);font-size:.8em;margin-right:4px">'+num+'.</span>'+cap;
+    });
+    // Break before i. ii. iii.
+    s = s.replace(/\s+(i{1,3}v?|iv|vi{0,3})\. /gi, function(m, rom) {
+      return '<br><span style="display:inline-block;min-width:22px;color:var(--gold-dim);font-size:.8em;margin-right:4px">'+rom.toLowerCase()+'.</span>';
+    });
+    return s;
+  }
+
+  function getRuleAvg(ruleNum) {
+    var items = PROMPTS.map(function(p,i){ return {p:p,i:i}; }).filter(function(x){ return x.p.rule===ruleNum; });
+    var attempted = items.filter(function(x){ return typeof scores!=='undefined' && scores[x.i]; });
+    if (!attempted.length) return null;
+    return Math.round(attempted.reduce(function(s,x){ return s+scores[x.i].best; },0)/attempted.length);
+  }
+
+  function buildRuleList(currentRule) {
+    var listEl = document.getElementById('pr-rule-list');
+    if (!listEl) return;
+    listEl.innerHTML = '';
+    var rules = [];
+    PROMPTS.forEach(function(p){ if(rules.indexOf(p.rule)===-1) rules.push(p.rule); });
+    rules.forEach(function(r) {
+      var avg = getRuleAvg(r);
+      var col = avg===null?'var(--border)':avg>=80?'var(--green)':avg>=50?'var(--amber)':'var(--red)';
+      var bg  = avg===null?'transparent':avg>=80?'color-mix(in srgb,var(--green) 15%,transparent)':avg>=50?'color-mix(in srgb,var(--amber) 15%,transparent)':'color-mix(in srgb,var(--red) 15%,transparent)';
+      var dot = document.createElement('button');
+      var firstIdx = PROMPTS.findIndex(function(p){ return p.rule===r; });
+      dot.title = 'Rule '+r+' — '+PROMPTS[firstIdx].rule_title+(avg!==null?' ('+avg+'%)':'');
+      dot.textContent = r;
+      dot.style.cssText = 'width:26px;height:26px;border-radius:4px;border:1.5px solid;cursor:pointer;font-family:"DM Mono",monospace;font-size:.58rem;font-weight:600;transition:all .12s;flex-shrink:0;';
+      dot.style.borderColor = col;
+      dot.style.background  = r===currentRule?(avg===null?'var(--border)':bg.replace('15%','25%')):bg;
+      dot.style.color       = r===currentRule?'var(--text)':(avg===null?'var(--muted)':col);
+      dot.style.outline     = r===currentRule?'2px solid var(--gold)':'none';
+      dot.style.outlineOffset = '2px';
+      dot.addEventListener('click', function(){ var idx=PROMPTS.findIndex(function(p){ return p.rule===r; }); loadPractice(idx); });
+      listEl.appendChild(dot);
+    });
+  }
+
+  function buildSectionList(ruleNum, currentIdx) {
+    var listEl = document.getElementById('pr-section-list');
+    var badge  = document.getElementById('pr-left-rule-badge');
+    var secLbl = document.getElementById('pr-sections-label');
+    if (!listEl) return;
+    listEl.innerHTML = '';
+    if (badge) badge.textContent = 'Rule '+ruleNum;
+    if (secLbl) secLbl.textContent = 'Rule '+ruleNum+' — Sections';
+    PROMPTS.forEach(function(p, i) {
+      if (p.rule !== ruleNum) return;
+      var dot = document.createElement('button');
+      dot.title = '§'+p.section+' '+p.section_title.replace(/\.$/, '');
+      dot.style.cssText = 'width:28px;height:28px;border-radius:4px;border:1.5px solid;cursor:pointer;font-family:"DM Mono",monospace;font-size:.58rem;font-weight:600;transition:all .12s;flex-shrink:0;';
+      var sc = (typeof scores!=='undefined'&&scores[i])?scores[i].best:null;
+      var col = sc===null?'var(--border)':sc>=80?'var(--green)':sc>=50?'var(--amber)':'var(--red)';
+      var bg  = sc===null?'transparent':sc>=80?'color-mix(in srgb,var(--green) 15%,transparent)':sc>=50?'color-mix(in srgb,var(--amber) 15%,transparent)':'color-mix(in srgb,var(--red) 15%,transparent)';
+      dot.style.borderColor = col;
+      dot.style.background  = i===currentIdx?(sc===null?'var(--border)':bg.replace('15%','25%')):bg;
+      dot.style.color       = i===currentIdx?'var(--text)':(sc===null?'var(--muted)':col);
+      dot.style.outline     = i===currentIdx?'2px solid var(--gold)':'none';
+      dot.style.outlineOffset = '2px';
+      dot.textContent = p.section;
+      dot.addEventListener('click', function(){ loadPractice(i); });
+      listEl.appendChild(dot);
+    });
+    buildRuleList(ruleNum);
+  }
+  function updatePrOverallStats() {
+    if (typeof scores === 'undefined') return;
+    var done     = Object.keys(scores).length;
+    var mastered = Object.values(scores).filter(function(v){ return v.best >= 80; }).length;
+    var avg      = done ? Math.round(Object.values(scores).reduce(function(s,v){ return s+v.best; },0)/done) : null;
+    var doneEl = document.getElementById('pr-overall-done');
+    var avgEl  = document.getElementById('pr-overall-avg');
+    var mastEl = document.getElementById('pr-overall-mastered');
+    try {
+      if (doneEl) doneEl.textContent = done;
+      if (mastEl) mastEl.textContent = mastered;
+      if (avgEl) {
+        avgEl.textContent = avg !== null ? 'avg ' + avg + '%' : 'avg —';
+        avgEl.style.color = avg !== null ? (avg>=80?'var(--green)':avg>=50?'var(--amber)':'var(--red)') : 'var(--muted)';
+      }
+    } catch(e) {}
+  }
+
+  function loadPractice(idx) {
+    prPos = idx;
+    var p = PROMPTS[idx];
+    // section title now shown in dropdown
+    if (posEl) posEl.textContent = (idx + 1);
+    provText.innerHTML = formatProvisionText(p.answer);
+    var rightRule  = document.getElementById('pr-right-rule');
+    var rightSec   = document.getElementById('pr-right-section');
+    var rightScore = document.getElementById('pr-right-score');
+    if (rightRule) rightRule.textContent = 'Rule ' + p.rule + ' \u2014 ' + p.rule_title;
+    if (rightSec)  rightSec.textContent  = '\u00a7' + p.section + ' ' + p.section_title.replace(/\.$/, '');
+    if (rightScore) {
+      var sc = (typeof scores !== 'undefined' && scores[idx]) ? scores[idx].best : null;
+      if (sc !== null) {
+        try { rightScore.textContent = 'Best: ' + sc + '%'; } catch(e) {}
+        rightScore.style.color = sc >= 80 ? 'var(--green)' : sc >= 50 ? 'var(--amber)' : 'var(--red)';
+        rightScore.style.display = '';
+      } else {
+        rightScore.style.display = 'none';
+      }
+    }
+    textarea.value         = '';
+    var disp = document.getElementById('practice-display');
+    if (disp) disp.innerHTML = '<span style="color:var(--muted);font-style:italic;">Start typing…</span>';
+    buildSectionList(p.rule, idx);
+    updatePrOverallStats();
+    // Sync dropdowns
+    if (prRuleSelect) {
+      prRuleSelect.value = p.rule;
+      populatePrSections(p.rule);
+      prSecSelect.value  = idx;
+    }
+    // Update progress bar
+    if (prProgFill) {
+      prProgFill.style.width = ((idx+1) / PROMPTS.length * 100).toFixed(1) + '%';
+      var lbl = document.getElementById('pr-progress-label');
+      if (lbl) lbl.textContent = (idx+1) + ' / ' + PROMPTS.length;
+    }
+    showReadMode();
+    textarea.focus();
+  }
+
+  function showReadMode() {
+    trainScreen.style.display   = 'flex';
+    recallScreen.style.display  = 'none';
+    scorePanel.style.display    = 'none';
+    recallTA.value              = '';
+    goodNextBtn.style.display   = 'none';
+    textarea.focus();
+  }
+
+  function showRecallMode() {
+    var p = PROMPTS[prPos];
+    textarea.value              = '';
+    trainScreen.style.display   = 'none';
+    recallScreen.style.display  = 'flex';
+    if (recallTitle) recallTitle.textContent = p.section_title.replace(/\.$/, '');
+    if (recallSub) recallSub.textContent = 'Rule ' + p.rule + ' \u2014 ' + p.rule_title;
+    recallTA.value              = '';
+    recallTA.disabled           = false;
+    scorePanel.style.display    = 'none';
+    checkBtn.style.display      = '';
+    goodNextBtn.style.display   = 'none';
+    if (document.getElementById('practice-retry-recall-btn')) document.getElementById('practice-retry-recall-btn').style.display = 'none';
+    recallTA.focus();
+  }
+
+  function checkRecall() {
+    var p        = PROMPTS[prPos];
+    var userAns  = recallTA.value.trim();
+    if (!userAns) return;
+
+    function tokenise(t) {
+      return t.toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(function(w){ return w.length>0; });
+    }
+    var correctToks = tokenise(p.answer);
+    var userToks    = new Set(tokenise(userAns));
+    var matched = 0, missed = [], core = [];
+    correctToks.forEach(function(w) {
+      if (PR_STOP.has(w)) return;
+      core.push(w);
+      if (userToks.has(w)) matched++;
+      else missed.push(w);
+    });
+    var total = core.length || 1;
+    var score = Math.round(matched / total * 100);
+    var grade = score>=90?'Excellent':score>=75?'Good':score>=50?'Partial':score>=25?'Poor':'Missed';
+    var col   = score>=80?'var(--green)':score>=50?'var(--amber)':'var(--red)';
+
+    if (prBadge) { prBadge.textContent = score + '%'; prBadge.style.color = col; }
+    if (prLabel) prLabel.textContent = grade + ' \u2014 ' + matched + ' of ' + total + ' key words matched';
+    var topMissed = missed.filter(function(w){ return w.length>2; }).sort(function(a,b){ return b.length-a.length; }).slice(0,6);
+    if (prSub) prSub.textContent = topMissed.length ? '\u2717 Missing: ' + topMissed.join('  \u00b7  ') : '\u2713 All key words covered';
+    if (prDiff) prDiff.innerHTML = smartDiff(p.answer, userAns);
+    scorePanel.style.display = 'flex';
+    checkBtn.style.display   = 'none';
+    recallTA.disabled        = true;
+    if (retryRecallBtn) retryRecallBtn.style.display = '';
+
+    // Show next button only when score >= 75
+    if (score >= 75) {
+      goodNextBtn.style.display = '';
+    }
+
+    // Save to scores object
+    if (typeof scores !== 'undefined') {
+      var pi = prPos;
+      if (!scores[pi] || score > scores[pi].best) {
+        scores[pi] = { best: score, attempts: (scores[pi]?scores[pi].attempts:0) + 1 };
+      } else { scores[pi].attempts++; }
+      if (typeof saveProgress === 'function') saveProgress();
+      if (typeof updateSidebarStats === 'function') updateSidebarStats();
+      if (typeof buildTrackerList === 'function') buildTrackerList();
+    }
+  }
+
+  // Button wiring
+  clearBtn.addEventListener('click', function() {
+    textarea.value = '';
+    var disp = document.getElementById('practice-display');
+    if (disp) disp.innerHTML = '<span style="color:var(--muted);font-style:italic;">Start typing the provision from the right side. Read, then cover it mentally and type…</span>';
+    textarea.focus();
+  });
+  recallBtn.addEventListener('click', showRecallMode);
+  nextBtn.addEventListener('click', function() { if (prPos < PROMPTS.length-1) loadPractice(prPos+1); });
+  prevBtn.addEventListener('click', function() { if (prPos > 0) loadPractice(prPos-1); });
+  checkBtn.addEventListener('click', checkRecall);
+  var retryRecallBtn = document.getElementById('practice-retry-recall-btn');
+  if (retryRecallBtn) retryRecallBtn.addEventListener('click', function() {
+    recallTA.value = '';
+    recallTA.disabled = false;
+    scorePanel.style.display = 'none';
+    checkBtn.style.display = '';
+    retryRecallBtn.style.display = 'none';
+    goodNextBtn.style.display = 'none';
+    recallTA.focus();
+  });
+  recallTA.addEventListener('keydown', function(e) { if ((e.ctrlKey||e.metaKey) && e.key==='Enter') { e.preventDefault(); checkRecall(); } });
+  goodNextBtn.addEventListener('click', function() { if (prPos < PROMPTS.length-1) loadPractice(prPos+1); });
+
+  tryAgainBtn.addEventListener('click', function() { showReadMode(); });
+  var backToTrainBtn = document.getElementById('pr-back-to-train-btn');
+  if (backToTrainBtn) backToTrainBtn.addEventListener('click', function() { showReadMode(); });
+
+  // Open / close
+  // Build rule dropdown
+  var prRuleSelect = document.getElementById('pr-rule-select');
+  var prSecSelect  = document.getElementById('pr-sec-select');
+  var prProgFill   = document.getElementById('pr-progress-fill');
+
+  var prRuleMap = {};
+  PROMPTS.forEach(function(p, i) {
+    if (!prRuleMap[p.rule]) prRuleMap[p.rule] = [];
+    prRuleMap[p.rule].push({ idx: i, section: p.section, title: p.section_title });
+  });
+
+  Object.keys(prRuleMap).sort(function(a,b){ return +a-+b; }).forEach(function(r) {
+    var o = document.createElement('option');
+    o.value = r;
+    o.textContent = 'Rule ' + r + ' — ' + PROMPTS.find(function(p){ return p.rule===r; }).rule_title;
+    prRuleSelect.appendChild(o);
+  });
+
+  function populatePrSections(rule) {
+    prSecSelect.innerHTML = '';
+    (prRuleMap[rule] || []).forEach(function(s) {
+      var o = document.createElement('option');
+      o.value = s.idx;
+      o.textContent = '§' + s.section + ' ' + s.title.replace(/\.$/, '').substring(0, 35) + (s.title.length > 35 ? '…' : '');
+      prSecSelect.appendChild(o);
+    });
+  }
+
+  prRuleSelect.addEventListener('change', function() {
+    populatePrSections(prRuleSelect.value);
+    loadPractice(+prSecSelect.value);
+  });
+  prSecSelect.addEventListener('change', function() {
+    loadPractice(+prSecSelect.value);
+  });
+
+  var prInitialized = false;
+  function open() {
+    overlay.style.display = 'flex';
+    if (!prInitialized) {
+      populatePrSections(Object.keys(prRuleMap).sort(function(a,b){return+a-+b;})[0]);
+      prInitialized = true;
+    }
+    loadPractice(prPos);
+  }
+  function close() { overlay.style.display = 'none'; }
+  openBtn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  var mainPageBtn = document.getElementById('practice-main-btn');
+  if (mainPageBtn) mainPageBtn.addEventListener('click', close);
+  document.addEventListener('keydown', function(e) {
+    if (overlay.style.display !== 'flex') return;
+    if (e.key === 'Escape') close();
+  });
+
+  // Welcome nav wiring (done in welcome JS block, but add here as fallback)
+  var wp = document.getElementById('wn-practice');
+  if (wp) wp.addEventListener('click', function() {
+    var ov2 = document.getElementById('welcome-overlay');
+    if (ov2) { ov2.classList.add('hidden'); setTimeout(function(){ ov2.style.display='none'; open(); }, 300); }
+    else open();
+  });
+})();
+
+// ── MORE MENU ─────────────────────────────────────────────────────────────────
+(function() {
+  var btn      = document.getElementById('more-btn');
+  var dropdown = document.getElementById('more-dropdown');
+  if (!btn || !dropdown) return;
+
+  function toggle(e) {
+    e.stopPropagation();
+    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+  }
+  function close() { dropdown.style.display = 'none'; }
+
+  btn.addEventListener('click', toggle);
+  document.addEventListener('click', function(e) {
+    if (!document.getElementById('more-menu-wrap').contains(e.target)) close();
+  });
+
+  // Each item in dropdown closes it after click
+  dropdown.querySelectorAll('.more-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      setTimeout(close, 80);
+    });
+  });
+})();
+
+// ── FEATURES DROPDOWN ─────────────────────────────────────────────────────────
+(function() {
+  var toggleBtn = document.getElementById('features-toggle-btn');
+  var list      = document.getElementById('features-list');
+  var chevron   = document.getElementById('features-chevron');
+  if (!toggleBtn || !list) return;
+  var open = false;
+
+  toggleBtn.addEventListener('click', function() {
+    open = !open;
+    list.style.display    = open ? 'block' : 'none';
+    chevron.textContent   = open ? '\u2965' : '\u2964';
+    toggleBtn.style.borderColor = open ? 'var(--gold-dim)' : 'var(--border)';
+    toggleBtn.style.borderRadius = open ? '5px 5px 0 0' : '5px';
+  });
+})();
+
+// ── REAL-TIME TYPING FEEDBACK ─────────────────────────────────────────────────
+(function() {
+  function initRTT() {
+    var ta      = document.getElementById('practice-textarea');
+    var display = document.getElementById('practice-display');
+    if (!ta || !display) return;
+
+    function getTarget() {
+      // Get the current provision text from the right pane
+      var prov = document.getElementById('practice-provision-text');
+      return prov ? prov.textContent : '';
+    }
+
+    function render() {
+      var typed  = ta.value;
+      var target = getTarget();
+
+      if (!typed) {
+        display.innerHTML = '<span style="color:var(--muted);font-style:italic;">Start typing the provision from the right side. Read, then cover it mentally and type…</span>';
+        return;
+      }
+
+      var html = '';
+      for (var i = 0; i < typed.length; i++) {
+        var tc = typed[i];
+        var rc = target[i];
+        if (rc === undefined || tc !== rc) {
+          html += '<span class="rtt-wrong">' + escH(tc) + '</span>';
+        } else {
+          html += escH(tc);
+        }
+      }
+      // Add cursor
+      html += '<span class="rtt-cursor">&nbsp;</span>';
+      // No ghost text — only show what's been typed
+      display.innerHTML = html;
+      // Scroll display to bottom
+      display.scrollTop = display.scrollHeight;
+    }
+
+    function escH(s) {
+      var r = '';
+      for (var i = 0; i < s.length; i++) {
+        var c = s[i];
+        if (c === '&') r += '&amp;';
+        else if (c === '<') r += '&lt;';
+        else if (c === '>') r += '&gt;';
+        else if (c === ' ') r += '&nbsp;';
+        else if (c === String.fromCharCode(10)) r += '<br>';
+        else r += c;
+      }
+      return r;
+    }
+
+    ta.addEventListener('input', render);
+    ta.addEventListener('focus', function() { display.style.borderColor = 'var(--gold-dim)'; });
+    ta.addEventListener('blur',  function() { display.style.borderColor = 'var(--border)'; });
+    display.addEventListener('click', function() { ta.focus(); });
+
+    // Re-init when practice mode opens / navigates
+    document.getElementById('practice-btn') && document.getElementById('practice-btn').addEventListener('click', function() {
+      setTimeout(function() { ta.focus(); }, 200);
+    });
+  }
+
+  // Wait for DOM then init
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initRTT);
+  } else {
+    initRTT();
+  }
 })();
 
 
