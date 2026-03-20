@@ -1701,13 +1701,7 @@ function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').
       document.body.classList.add('light');
       themeBtn.textContent = '🌙';
     }
-    // Restore sort mode
-    if (saved.sortMode) {
-      sortMode = saved.sortMode;
-      document.querySelectorAll('#sort-bar button').forEach(b => {
-        b.classList.toggle('active', b.dataset.sort === sortMode);
-      });
-    }
+    // Always start on "All" — don't restore sort mode across sessions
     // Restore last position
     if (typeof saved.lastIdx === 'number' && saved.lastIdx < PROMPTS.length) {
       qPos = saved.lastIdx;
