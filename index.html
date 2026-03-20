@@ -1548,6 +1548,21 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
   </div>
 
 
+  <!-- ── CONFIRM MODAL ── -->
+  <div id="confirm-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);align-items:center;justify-content:center;padding:24px;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;max-width:360px;width:100%;padding:24px 24px 20px;display:flex;flex-direction:column;gap:16px;">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--red);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">Warning</div>
+        <div style="font-size:1rem;font-weight:600;color:var(--text);" id="confirm-title">Are you sure?</div>
+        <div style="font-size:.88rem;color:var(--muted);margin-top:4px;line-height:1.5;" id="confirm-body"></div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button id="confirm-cancel-btn" style="flex:1;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.68rem;padding:9px 0;border-radius:5px;cursor:pointer;">Cancel</button>
+        <button id="confirm-ok-btn" style="flex:1;background:var(--red);color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.68rem;font-weight:600;padding:9px 0;border-radius:5px;cursor:pointer;">Yes, erase all</button>
+      </div>
+    </div>
+  </div>
+
 
 </div>
 
@@ -1615,18 +1630,40 @@ function loadProgress() {
   } catch(e) { return null; }
 }
 
+function showConfirm(title, body, onConfirm) {
+  var modal   = document.getElementById('confirm-modal');
+  var titleEl = document.getElementById('confirm-title');
+  var bodyEl  = document.getElementById('confirm-body');
+  var okBtn   = document.getElementById('confirm-ok-btn');
+  var cancelBtn = document.getElementById('confirm-cancel-btn');
+  titleEl.textContent = title;
+  bodyEl.textContent  = body;
+  modal.style.display = 'flex';
+  function cleanup() { modal.style.display = 'none'; okBtn.removeEventListener('click', onOk); cancelBtn.removeEventListener('click', onCancel); }
+  function onOk()     { cleanup(); onConfirm(); }
+  function onCancel() { cleanup(); }
+  okBtn.addEventListener('click', onOk);
+  cancelBtn.addEventListener('click', onCancel);
+  modal.addEventListener('click', function(e) { if (e.target === modal) { cleanup(); } }, { once: true });
+}
+
 function clearProgress() {
-  if (!confirm('Clear all saved progress? This cannot be undone.')) return;
-  localStorage.removeItem(STORAGE_KEY);
-  Object.keys(scores).forEach(k => delete scores[k]);
-  sessAnswered = 0; sessScoreSum = 0;
-  lightMode = false;
-  document.body.classList.remove('light');
-  themeBtn.textContent = '☀';
-  updateSidebarStats();
-  updateSessionStats();
-  buildTrackerList();
-  renderCurrent();
+  showConfirm(
+    'Erase all progress?',
+    'This will permanently delete all your scores across all 271 provisions. This cannot be undone.',
+    function() {
+      localStorage.removeItem(STORAGE_KEY);
+      Object.keys(scores).forEach(k => delete scores[k]);
+      sessAnswered = 0; sessScoreSum = 0;
+      lightMode = false;
+      document.body.classList.remove('light');
+      themeBtn.textContent = '☀';
+      updateSidebarStats();
+      updateSessionStats();
+      buildTrackerList();
+      renderCurrent();
+    }
+  );
 }
 
 // ── STATE ────────────────────────────────────────────────────────────────────
