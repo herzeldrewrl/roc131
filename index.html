@@ -33,99 +33,46 @@ html,body{height:100%;background:var(--bg);color:var(--text);
 /* ── SIDEBAR ── */
 #sidebar {
   width: var(--sidebar-w); min-width: var(--sidebar-w);
-  background: var(--surface);
-  border-right: 1px solid var(--border);
+  background: var(--surface); border-right: 1px solid var(--border);
   display: flex; flex-direction: column;
   height: 100vh; overflow: hidden; flex-shrink: 0;
-  transition: width .2s ease, min-width .2s ease;
-  position: relative;
+  transition: width .2s ease, min-width .2s ease; position: relative;
 }
 #sidebar.collapsed { width: 32px; min-width: 32px; }
 #sidebar.collapsed #sidebar-inner { display: none; }
-
 #sidebar-toggle {
   position: absolute; bottom: 0; left: 0; right: 0;
-  width: 100%; height: 32px;
-  background: var(--gold); border: none;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  gap: 6px;
+  width: 100%; height: 32px; background: var(--gold); border: none;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
   color: #0e0d0b; font-family: 'DM Mono', monospace;
-  font-size: .62rem; font-weight: 600; letter-spacing: .08em;
-  text-transform: uppercase; padding: 0; line-height: 1;
-  transition: opacity .15s; flex-shrink: 0; z-index: 2;
+  font-size: .62rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  padding: 0; line-height: 1; transition: opacity .15s; flex-shrink: 0; z-index: 2;
 }
 #sidebar-toggle:hover { opacity: .85; }
-#sidebar.collapsed #sidebar-toggle {
-  background: var(--border); color: var(--text);
-  writing-mode: vertical-rl; height: auto; width: 100%;
-  padding: 10px 0; font-size: .56rem;
-}
-
-#sidebar-collapsed-label {
-  display: none;
-  writing-mode: vertical-rl; text-orientation: mixed;
-  font-family: 'DM Mono', monospace; font-size: .56rem;
-  letter-spacing: .14em; text-transform: uppercase; color: var(--gold-dim);
-  padding: 16px 8px; white-space: nowrap;
-  cursor: pointer; user-select: none; margin-top: 20px;
-}
+#sidebar.collapsed #sidebar-toggle { background: var(--border); color: var(--text); writing-mode: vertical-rl; height: auto; width: 100%; padding: 10px 0; font-size: .56rem; }
+#sidebar-collapsed-label { display: none; writing-mode: vertical-rl; text-orientation: mixed; font-family: 'DM Mono', monospace; font-size: .56rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-dim); padding: 16px 8px; white-space: nowrap; cursor: pointer; user-select: none; margin-top: 20px; }
 #sidebar.collapsed #sidebar-collapsed-label { display: block; }
-
 #sidebar-inner { display: flex; flex-direction: column; height: calc(100% - 32px); overflow: hidden; }
-
 #sidebar-header { padding: 11px 12px 9px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-
-.sidebar-top-row {
-  display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px;
-}
-#sidebar-title {
-  font-family: 'DM Mono', monospace; font-size: .67rem;
-  color: var(--gold-dim); letter-spacing: .1em; text-transform: uppercase;
-}
+.sidebar-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
+#sidebar-title { font-family: 'DM Mono', monospace; font-size: .67rem; color: var(--gold-dim); letter-spacing: .1em; text-transform: uppercase; }
 #save-indicator { font-size: .58rem; color: var(--green); font-weight: normal; display: none; margin-left: 5px; }
-
 .sidebar-stats-row { display: flex; gap: 5px; margin-bottom: 9px; }
-.sidebar-stat-pill {
-  flex: 1; background: var(--bg); border: 1px solid var(--border);
-  border-radius: 5px; padding: 6px 4px;
-  display: flex; flex-direction: column; align-items: center; gap: 2px;
-}
+.sidebar-stat-pill { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: 6px 4px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
 .sp-num { font-family: 'DM Mono', monospace; font-size: .8rem; font-weight: 500; color: var(--text); line-height: 1; }
 .sp-lbl { font-family: 'DM Mono', monospace; font-size: .52rem; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
-
 #sort-bar { display: flex; gap: 3px; }
-#sort-bar button {
-  flex: 1; font-family: 'DM Mono', monospace; font-size: .6rem;
-  padding: 4px 2px; border-radius: 3px; border: 1px solid var(--border);
-  background: transparent; color: var(--muted); cursor: pointer; transition: all .12s;
-}
+#sort-bar button { flex: 1; font-family: 'DM Mono', monospace; font-size: .6rem; padding: 4px 2px; border-radius: 3px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: all .12s; }
 #sort-bar button:hover { background: var(--border); color: var(--text); }
 #sort-bar button.active { background: var(--gold); color: #0e0d0b; border-color: var(--gold); }
-
 #tracker-list { overflow-y: auto; flex: 1; padding: 4px 6px 12px; }
 .tracker-rule-group { margin-bottom: 2px; }
-.tracker-rule-label {
-  font-family: 'DM Mono', monospace; font-size: .6rem;
-  color: var(--gold-dim); letter-spacing: .05em; text-transform: uppercase;
-  padding: 5px 5px 3px; position: sticky; top: 0;
-  background: var(--surface); z-index: 1;
-  display: flex; align-items: center; border-radius: 3px;
-}
+.tracker-rule-label { font-family: 'DM Mono', monospace; font-size: .6rem; color: var(--gold-dim); letter-spacing: .05em; text-transform: uppercase; padding: 5px 5px 3px; position: sticky; top: 0; background: var(--surface); z-index: 1; display: flex; align-items: center; border-radius: 3px; }
 .tracker-rule-label:hover { background: color-mix(in srgb, var(--gold) 6%, var(--surface)); }
-.tracker-item {
-  display: flex; align-items: center; gap: 6px;
-  padding: 4px 5px; border-radius: 4px; cursor: pointer;
-  transition: background .1s; font-size: .76rem; line-height: 1.3;
-}
+.tracker-item { display: flex; align-items: center; gap: 6px; padding: 4px 5px; border-radius: 4px; cursor: pointer; transition: background .1s; font-size: .76rem; line-height: 1.3; }
 .tracker-item:hover { background: var(--border); }
-.tracker-item.current {
-  background: color-mix(in srgb, var(--gold) 13%, transparent);
-  border-left: 2px solid var(--gold-dim); padding-left: 3px;
-}
-.tracker-dot {
-  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-  border: 1.5px solid var(--muted); background: transparent; transition: all .2s;
-}
+.tracker-item.current { background: color-mix(in srgb, var(--gold) 13%, transparent); border-left: 2px solid var(--gold-dim); padding-left: 3px; }
+.tracker-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; border: 1.5px solid var(--muted); background: transparent; transition: all .2s; }
 .tracker-dot.correct { background: var(--green); border-color: var(--green); }
 .tracker-dot.wrong   { background: var(--red);   border-color: var(--red); }
 .tracker-dot.partial { background: var(--amber);  border-color: var(--amber); }
@@ -726,6 +673,7 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
     line-height: 1.5; border: 1px solid; display: none;
   }
 
+  /* ── ARRANGE ITEMS ── */
   .arr-item{display:flex;align-items:center;gap:10px;padding:9px 13px;background:var(--bg);border:1.5px solid var(--border);border-radius:6px;cursor:grab;font-size:.88rem;color:var(--text);user-select:none;}
   .arr-item:hover{border-color:var(--gold-dim);}
   .arr-item.dragging{opacity:.35;cursor:grabbing;}
@@ -735,6 +683,15 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
   .arr-secnum{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--gold-dim);min-width:28px;flex-shrink:0;visibility:hidden;}
   .arr-secnum.shown{visibility:visible;}
 
+  /* ── WELCOME QUICK NAV ── */
+  .welcome-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;margin-bottom:20px;}
+  .welcome-nav-btn{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:border-color .15s,background .15s;font-family:inherit;color:var(--text);}
+  .welcome-nav-btn:hover{border-color:var(--gold-dim);background:color-mix(in srgb,var(--gold) 6%,var(--surface));}
+  .wn-icon{font-size:1.3rem;line-height:1;}
+  .wn-label{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-dim);}
+  .wn-desc{font-family:'EB Garamond',Georgia,serif;font-size:.82rem;color:var(--muted);font-style:italic;}
+
+  /* ── WELCOME PAGE ── */
   #welcome-overlay{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:32px;transition:opacity .5s ease;}
   #welcome-overlay.hidden{opacity:0;pointer-events:none;}
   .welcome-card{max-width:380px;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;}
@@ -742,190 +699,65 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
   .welcome-eyebrow{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:13px;}
   .welcome-title{font-family:'EB Garamond',Georgia,serif;font-size:2.8rem;font-weight:600;color:var(--text);line-height:1;letter-spacing:-.02em;margin-bottom:8px;}
   .welcome-tagline{font-family:'EB Garamond',Georgia,serif;font-size:.95rem;color:var(--muted);font-style:italic;margin-bottom:4px;}
-  .welcome-byline{font-family:'DM Mono',monospace;font-size:.56rem;color:var(--muted);opacity:.38;letter-spacing:.14em;text-transform:uppercase;margin-bottom:34px;}
-  .welcome-stats{display:flex;gap:0;margin-bottom:34px;border:1px solid var(--border);border-radius:7px;overflow:hidden;width:100%;}
+  .welcome-byline{font-family:'DM Mono',monospace;font-size:.56rem;color:var(--muted);opacity:.38;letter-spacing:.14em;text-transform:uppercase;margin-bottom:28px;}
+  .welcome-stats{display:flex;gap:0;margin-bottom:20px;border:1px solid var(--border);border-radius:7px;overflow:hidden;width:100%;}
   .welcome-stat{flex:1;padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;border-right:1px solid var(--border);background:color-mix(in srgb,var(--surface) 60%,transparent);}
   .welcome-stat:last-child{border-right:none;}
   .welcome-stat-num{font-family:'DM Mono',monospace;font-size:1.4rem;font-weight:500;color:var(--text);line-height:1;}
   .welcome-stat-lbl{font-family:'DM Mono',monospace;font-size:.54rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
-  .welcome-btn{background:var(--gold);color:#0e0d0b;font-family:'DM Mono',monospace;font-size:.74rem;font-weight:600;letter-spacing:.08em;border:none;border-radius:5px;padding:12px 0;cursor:pointer;width:100%;transition:opacity .15s,transform .1s;margin-bottom:12px;}
-  .welcome-btn:hover{opacity:.87;}.welcome-btn:active{transform:scale(.98);}
-  .welcome-skip{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);cursor:pointer;background:none;border:none;letter-spacing:.06em;opacity:.5;transition:opacity .15s;}
-  .welcome-skip:hover{opacity:1;}
   .welcome-rule-line-bottom{width:1px;height:44px;background:linear-gradient(to top,transparent,var(--gold-dim));margin-top:22px;}
 
-/* ══════════════════════════════════════════
-   MOBILE / RESPONSIVE
-   ══════════════════════════════════════════ */
-@media (max-width: 700px) {
-
-  :root { --sidebar-w: 100vw; }
-
-  /* Stack layout vertically */
-  #shell {
-    flex-direction: column;
-    height: 100dvh;
-    overflow: hidden;
+  /* ── MOBILE ── */
+  #mobile-nav{display:none;}
+  #sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:499;}
+  #sidebar-backdrop.active{display:block;}
+  @media(max-width:700px){
+    :root{--sidebar-w:100vw;}
+    #shell{flex-direction:column;height:100dvh;overflow:hidden;}
+    #sidebar{position:fixed;top:0;left:0;right:0;width:100%!important;min-width:0!important;height:auto;max-height:70vh;z-index:500;border-right:none;border-bottom:1px solid var(--border);transform:translateY(-110%);transition:transform .25s ease;box-shadow:0 8px 32px rgba(0,0,0,.4);}
+    #sidebar.mobile-open{transform:translateY(0);}
+    #sidebar.collapsed{width:100%!important;}
+    #sidebar-toggle{display:none;}
+    #sidebar-collapsed-label{display:none!important;}
+    #sidebar-inner{height:100%!important;max-height:calc(70vh);}
+    #main-panel{flex:1;width:100%;overflow:hidden;display:flex;flex-direction:column;}
+    header{padding:8px 12px 6px;gap:6px;flex-wrap:nowrap;overflow:hidden;}
+    .header-title{font-size:.78rem;}
+    .header-title span{display:none;}
+    #rule-select,#sec-select,#ss-avg{display:none;}
+    #mobile-nav{display:flex!important;align-items:center;gap:6px;flex:1;justify-content:flex-end;}
+    #mobile-sidebar-btn{background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:'DM Mono',monospace;font-size:.65rem;padding:4px 8px;cursor:pointer;white-space:nowrap;}
+    #mobile-sidebar-btn.active{background:var(--gold);color:#0e0d0b;border-color:var(--gold);}
+    main{padding:14px 14px 80px;overflow-y:auto;flex:1;}
+    .prompt-card{padding:14px 16px;}
+    .prompt-title{font-size:1.05rem;}
+    textarea{min-height:120px;font-size:.95rem;padding:10px 14px;}
+    .btn-row{gap:6px;flex-wrap:wrap;}
+    .btn-row button{font-size:.68rem;padding:6px 10px;}
+    .btn-row .counter{display:none;}
+    kbd{display:none;}
+    .score-badge{font-size:1.2rem;min-width:44px;}
+    .diff-body{font-size:.88rem;padding:12px 14px;}
+    #ref-panel{position:fixed!important;top:0;right:0;bottom:0;width:0!important;min-width:0!important;z-index:600;transition:width .25s ease;}
+    #ref-panel.open{width:100%!important;}
+    #ref-inner{width:100vw!important;}
+    #ref-toggle-btn{bottom:16px;top:auto;transform:none;writing-mode:horizontal-tb;padding:10px 14px;font-size:.62rem;border-radius:8px 0 0 8px;}
+    #game-modal{max-width:100%;max-height:95dvh;border-radius:12px 12px 0 0;}
+    #game-overlay{align-items:flex-end;padding:0;}
+    .g-tab{font-size:.56rem;padding:8px 2px;}
+    .game-choices{grid-template-columns:1fr;gap:6px;}
+    #game-body,#hard-body,#arrange-body{padding:14px 16px!important;}
+    #help-overlay{align-items:flex-end!important;padding:0!important;}
+    #help-overlay > div{max-width:100%;border-radius:12px 12px 0 0;max-height:90dvh;}
+    .welcome-card{max-width:100%;padding:0 20px;}
+    .welcome-title{font-size:2.2rem;}
   }
-
-  /* Sidebar becomes a slide-down drawer */
-  #sidebar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    width: 100% !important; min-width: 0 !important;
-    height: auto; max-height: 70vh;
-    z-index: 500;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    transform: translateY(-110%);
-    transition: transform .25s ease;
-    box-shadow: 0 8px 32px rgba(0,0,0,.4);
-  }
-  #sidebar.mobile-open {
-    transform: translateY(0);
-  }
-  #sidebar.collapsed { width: 100% !important; }
-  #sidebar-toggle { display: none; }
-  #sidebar-collapsed-label { display: none !important; }
-  #sidebar-inner {
-    height: 100% !important;
-    max-height: calc(70vh - 0px);
-  }
-
-  /* Main panel takes full screen */
-  #main-panel {
-    flex: 1; width: 100%; overflow: hidden;
-    display: flex; flex-direction: column;
-  }
-
-  /* Compact mobile header */
-  header {
-    padding: 8px 12px 6px;
-    gap: 6px; flex-wrap: nowrap;
-    overflow: hidden;
-  }
-  .header-title { font-size: .78rem; }
-  .header-title span { display: none; }
-
-  /* Hide desktop nav elements, show mobile toggle */
-  #rule-select, #sec-select, #ss-avg { display: none; }
-
-  /* Mobile nav bar */
-  #mobile-nav {
-    display: flex !important;
-    align-items: center; gap: 6px;
-    flex: 1; justify-content: flex-end;
-  }
-  #mobile-sidebar-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 4px; color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    font-size: .65rem; padding: 4px 8px;
-    cursor: pointer; white-space: nowrap;
-  }
-  #mobile-sidebar-btn.active {
-    background: var(--gold); color: #0e0d0b;
-    border-color: var(--gold);
-  }
-
-  /* Scrollable main content */
-  main {
-    padding: 14px 14px 80px;
-    overflow-y: auto; flex: 1;
-  }
-
-  /* Prompt card */
-  .prompt-card { padding: 14px 16px; }
-  .prompt-title { font-size: 1.05rem; }
-
-  /* Textarea */
-  textarea {
-    min-height: 120px;
-    font-size: .95rem;
-    padding: 10px 14px;
-  }
-
-  /* Button row — wrap and smaller */
-  .btn-row {
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-  .btn-row button { font-size: .68rem; padding: 6px 10px; }
-  .btn-row .counter { display: none; }
-  kbd { display: none; }
-
-  /* Feedback */
-  .score-badge { font-size: 1.2rem; min-width: 44px; }
-  .diff-body { font-size: .88rem; padding: 12px 14px; }
-
-  /* Reference panel — full screen overlay */
-  #ref-panel {
-    position: fixed !important;
-    top: 0; right: 0; bottom: 0;
-    width: 0 !important; min-width: 0 !important;
-    z-index: 600;
-    transition: width .25s ease;
-  }
-  #ref-panel.open {
-    width: 100% !important; min-width: 0 !important;
-  }
-  #ref-inner { width: 100vw !important; }
-  #ref-toggle-btn {
-    bottom: 16px; top: auto;
-    transform: none;
-    writing-mode: horizontal-tb;
-    padding: 10px 14px;
-    font-size: .62rem;
-    border-radius: 8px 0 0 8px;
-  }
-
-  /* Game modal */
-  #game-modal {
-    max-width: 100%;
-    max-height: 95dvh;
-    border-radius: 12px 12px 0 0;
-  }
-  #game-overlay {
-    align-items: flex-end;
-    padding: 0;
-  }
-  .g-tab { font-size: .56rem; padding: 8px 2px; }
-  .game-choices { grid-template-columns: 1fr; gap: 6px; }
-  #game-body { padding: 14px 16px; }
-  #hard-body { padding: 14px 16px !important; }
-  #arrange-body { padding: 14px 16px !important; }
-
-  /* Help modal */
-  #help-overlay > div {
-    max-width: 100%;
-    border-radius: 12px 12px 0 0;
-    max-height: 90dvh;
-  }
-  /* Help overlay sticks to bottom */
-  #help-overlay {
-    align-items: flex-end !important;
-    padding: 0 !important;
-  }
-
-  /* Welcome page */
-  .welcome-card { max-width: 100%; padding: 0 20px; }
-  .welcome-title { font-size: 2.2rem; }
-
-  /* Sidebar overlay backdrop */
-  #sidebar-backdrop {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.5);
-    z-index: 499;
-  }
-  #sidebar-backdrop.active { display: block; }
-}
 
 </style>
 </head>
 <body>
 <div id="shell">
+
   <div id="sidebar-backdrop"></div>
 
   <!-- ── WELCOME PAGE ── -->
@@ -941,8 +773,12 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
         <div class="welcome-stat"><div class="welcome-stat-num" id="w-avg">&#8212;</div><div class="welcome-stat-lbl">Avg Score</div></div>
         <div class="welcome-stat"><div class="welcome-stat-num" id="w-mastered">0</div><div class="welcome-stat-lbl">Mastered</div></div>
       </div>
-      <button class="welcome-btn" id="welcome-start-btn">Begin Session &#8594;</button>
-      <button class="welcome-skip" id="welcome-skip-btn">skip</button>
+      <div class="welcome-nav">
+        <button class="welcome-nav-btn" id="wn-recall"><span class="wn-icon">&#9998;</span><span class="wn-label">Recall</span><span class="wn-desc">Type from memory</span></button>
+        <button class="welcome-nav-btn" id="wn-game"><span class="wn-icon">&#9889;</span><span class="wn-label">Game</span><span class="wn-desc">Easy &middot; Hard &middot; Arrange</span></button>
+        <button class="welcome-nav-btn" id="wn-progress"><span class="wn-icon">&#9679;</span><span class="wn-label">Progress</span><span class="wn-desc">Your score tracker</span></button>
+        <button class="welcome-nav-btn" id="wn-reference"><span class="wn-icon">&#128218;</span><span class="wn-label">Reference</span><span class="wn-desc">Browse provisions</span></button>
+      </div>
       <div class="welcome-rule-line-bottom"></div>
     </div>
   </div>
@@ -956,17 +792,17 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
       </div>
       <div style="height:1px;background:var(--border);"></div>
       <div style="display:flex;flex-direction:column;">
-        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">01</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>Type the provision from memory.</strong> A section title is shown &#8212; write the rule as best you can. Scored word-by-word, 0&#8211;100%.<span style="display:block;font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);margin-top:3px;">Ctrl+Enter to submit &nbsp;&#183;&nbsp; &#128161; Clue for a hint &nbsp;&#183;&nbsp; Peek Answer if stuck</span></div></div>
-        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">02</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>See your score instantly.</strong> Matched words highlight green, missed words red. The correct provision is shown side-by-side.</div></div>
-        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">03</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>Try Again or move on.</strong> Retry the same provision, or advance with Next. Use <em style="color:var(--gold-dim);font-style:normal;">&#10005; Erase Score</em> if you answered the wrong section by mistake.</div></div>
-        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">04</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>Drill with the sidebar.</strong> Filter by Wrong, Right, or Unseen. Shuffle for random order. Open Reference to browse any provision.<span style="display:block;font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);margin-top:3px;">Progress saves automatically in this browser</span></div></div>
+        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">01</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>Type the provision from memory.</strong> A section title is shown &#8212; write the rule as best you can. Scored word-by-word, 0&#8211;100%.<span style="display:block;font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);margin-top:3px;">Ctrl+Enter to submit &nbsp;&#183;&nbsp; &#128161; Clue &nbsp;&#183;&nbsp; Peek Answer if stuck</span></div></div>
+        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">02</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>See your score instantly.</strong> Matched words highlight green, missed words red.</div></div>
+        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">03</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>Try Again or move on.</strong> Use <em style="color:var(--gold-dim);font-style:normal;">&#10005; Erase Score</em> if you answered the wrong section.</div></div>
+        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">04</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>Drill with the sidebar.</strong> Filter by Wrong, Right, or Unseen. Progress saves automatically.<span style="display:block;font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);margin-top:3px;">Completely offline &#8212; no AI, no server</span></div></div>
         <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">05</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>Play the &#9889; Game.</strong> <em style="color:var(--gold-dim);font-style:normal;">Easy</em> &#8212; pick Rule then Section. <em style="color:var(--gold-dim);font-style:normal;">Hard</em> &#8212; type the numbers. <em style="color:var(--gold-dim);font-style:normal;">Arrange</em> &#8212; drag sections into order.</div></div>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;padding:8px 12px;border:1px solid var(--border);border-radius:5px;">
-        <span style="display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--muted);"><span style="width:9px;height:9px;border-radius:50%;background:#4a9c6d;display:inline-block;flex-shrink:0;"></span>&#8805;80%</span>
-        <span style="display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--muted);"><span style="width:9px;height:9px;border-radius:50%;background:#d4903a;display:inline-block;flex-shrink:0;"></span>50&#8211;79%</span>
-        <span style="display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--muted);"><span style="width:9px;height:9px;border-radius:50%;background:#c0504a;display:inline-block;flex-shrink:0;"></span>&lt;50%</span>
-        <span style="display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--muted);"><span style="width:9px;height:9px;border-radius:50%;border:1.5px solid #7a7060;display:inline-block;flex-shrink:0;"></span>unseen</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--muted);"><span style="width:9px;height:9px;border-radius:50%;background:#4a9c6d;display:inline-block;"></span>&#8805;80%</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--muted);"><span style="width:9px;height:9px;border-radius:50%;background:#d4903a;display:inline-block;"></span>50&#8211;79%</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--muted);"><span style="width:9px;height:9px;border-radius:50%;background:#c0504a;display:inline-block;"></span>&lt;50%</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--muted);"><span style="width:9px;height:9px;border-radius:50%;border:1.5px solid #7a7060;display:inline-block;"></span>unseen</span>
       </div>
       <div style="display:flex;justify-content:flex-end;"><button id="help-close-btn2" style="background:var(--gold);color:#0e0d0b;font-family:'DM Mono',monospace;font-size:.76rem;font-weight:500;border:none;border-radius:5px;padding:9px 24px;cursor:pointer;">Got it &#8594;</button></div>
     </div>
@@ -1057,8 +893,8 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
         </div>
         <div id="sort-bar">
           <button class="active" data-sort="default">All</button>
-          <button data-sort="wrong">✗</button>
-          <button data-sort="right">✓</button>
+          <button data-sort="wrong">&#10007;</button>
+          <button data-sort="right">&#10003;</button>
           <button data-sort="unseen">New</button>
           <button data-sort="score">&#8593;</button>
         </div>
@@ -1076,12 +912,12 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
         <select id="rule-select"></select>
         <select id="sec-select"></select>
         <span id="ss-avg" style="font-family:'DM Mono',monospace;font-size:.7rem;color:var(--muted);white-space:nowrap;">avg —</span>
-        <button class="btn-ghost" id="game-btn" style="padding:4px 9px;font-size:.68rem;color:var(--gold);border-color:var(--gold-dim);" title="Guess the Rule &amp; Section game">⚡ Game</button>
+        <button id="game-btn" style="background:var(--gold);color:#0e0d0b;border:none;border-radius:5px;padding:5px 13px;font-family:'DM Mono',monospace;font-size:.7rem;font-weight:600;letter-spacing:.04em;cursor:pointer;transition:opacity .15s;" title="Guess the Rule &amp; Section game" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">⚡ Game</button>
+        <button id="progress-btn" style="background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:5px;padding:5px 13px;font-family:'DM Mono',monospace;font-size:.7rem;font-weight:500;cursor:pointer;transition:background .15s,border-color .15s;" title="Progress tracker" onmouseover="this.style.borderColor='var(--gold-dim)'" onmouseout="this.style.borderColor='var(--border)'">&#9679; Progress</button>
         <button class="btn-ghost" id="help-btn" style="padding:4px 9px;font-size:.68rem;" title="Instructions">? Help</button>
         <button class="btn-ghost" id="theme-btn" style="padding:4px 9px;font-size:.68rem;">☀</button>
       </div>
-      <!-- Mobile nav -->
-      <div id="mobile-nav" style="display:none;">
+      <div id="mobile-nav">
         <button class="btn-ghost" id="theme-btn-mobile" style="padding:4px 8px;font-size:.68rem;">☀</button>
         <button class="btn-ghost" id="game-btn-mobile" style="padding:4px 8px;font-size:.68rem;color:var(--gold);border-color:var(--gold-dim);">⚡</button>
         <button id="mobile-sidebar-btn">☰ Progress</button>
@@ -1157,7 +993,6 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
     <div id="game-modal">
       <div id="game-header">
         <div id="game-header-title">⚡ Guess the Rule &amp; Section</div>
-        <span style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted);opacity:.3;letter-spacing:.1em;text-transform:uppercase;user-select:none;">DrewRL</span>
         <div id="game-stats-display">
           <span id="gs-mode-tag" style="color:var(--gold-dim);margin-right:4px">Easy</span>
           Correct: <span id="gs-correct">0</span>
@@ -1274,34 +1109,6 @@ const CLUES = {"0": "The name tag: these rules go by 'Rules of Court'.", "1": "U
       btn.click();
     }
   });
-})();
-
-
-// ── SIDEBAR COLLAPSE ──────────────────────────────────────────────────────────
-(function() {
-  var sidebar  = document.getElementById('sidebar');
-  var toggle   = document.getElementById('sidebar-toggle');
-  var label    = document.getElementById('sidebar-collapsed-label');
-
-  function setCollapsed(val) {
-    if (val) {
-      sidebar.classList.add('collapsed');
-      toggle.innerHTML = '&#8250; Expand';
-      toggle.title = 'Expand sidebar';
-    } else {
-      sidebar.classList.remove('collapsed');
-      toggle.innerHTML = '&#8249; Collapse';
-      toggle.title = 'Collapse sidebar';
-    }
-    try { localStorage.setItem('roc_sidebar_col', val ? '1' : '0'); } catch(e) {}
-  }
-
-  try { if (localStorage.getItem('roc_sidebar_col') === '1') setCollapsed(true); } catch(e) {}
-
-  toggle.addEventListener('click', function() {
-    setCollapsed(!sidebar.classList.contains('collapsed'));
-  });
-  label.addEventListener('click', function() { setCollapsed(false); });
 })();
 
 // ── PERSISTENCE ──────────────────────────────────────────────────────────────
@@ -2368,7 +2175,6 @@ updateSessionStats();
   const arrResEl   = document.getElementById('arr-result');
   const arrChkBtn  = document.getElementById('arr-check-btn');
   let arrItems = [], arrCorrect = [], arrDragSrc = null;
-
   function loadArrange() {
     const aRules = [...new Set(PROMPTS.map(p => p.rule))].sort((a,b) => +a-+b);
     const rule   = aRules[Math.floor(Math.random() * aRules.length)];
@@ -2379,7 +2185,6 @@ updateSessionStats();
     arrResEl.style.display = 'none'; arrChkBtn.disabled = false; nextBtn.disabled = true;
     renderArr(false);
   }
-
   function renderArr(reveal) {
     arrListEl.innerHTML = '';
     arrItems.forEach((pi, pos) => {
@@ -2390,8 +2195,7 @@ updateSessionStats();
       const handle = document.createElement('span');
       handle.textContent = reveal ? '' : '\u2630'; handle.style.cssText = 'color:var(--muted);flex-shrink:0;';
       const secNum = document.createElement('span');
-      secNum.className = 'arr-secnum' + (reveal ? ' shown' : '');
-      secNum.textContent = '\u00a7' + p.section;
+      secNum.className = 'arr-secnum' + (reveal ? ' shown' : ''); secNum.textContent = '\u00a7' + p.section;
       const lbl = document.createElement('span');
       lbl.style.flex = '1'; lbl.textContent = p.section_title.replace(/\.$/, '');
       item.appendChild(handle); item.appendChild(secNum); item.appendChild(lbl);
@@ -2408,7 +2212,6 @@ updateSessionStats();
       arrListEl.appendChild(item);
     });
   }
-
   arrChkBtn.addEventListener('click', () => {
     const correct = arrItems.every((idx,pos) => idx === arrCorrect[pos]);
     const score   = arrItems.filter((idx,pos) => idx === arrCorrect[pos]).length;
@@ -2427,28 +2230,101 @@ updateSessionStats();
   });
 
 })();
+
+// ── PROGRESS BUTTON ───────────────────────────────────────────────────────────
+(function() {
+  var btn = document.getElementById('progress-btn');
+  if (!btn) return;
+  btn.addEventListener('click', function() {
+    var mob = document.getElementById('mobile-sidebar-btn');
+    if (mob && window.innerWidth <= 700) { mob.click(); return; }
+    var sidebar = document.getElementById('sidebar');
+    if (sidebar && sidebar.classList.contains('collapsed')) {
+      var t = document.getElementById('sidebar-toggle');
+      if (t) t.click();
+    }
+    var hdr = document.getElementById('sidebar-header');
+    if (hdr) {
+      hdr.style.transition = 'background .15s';
+      hdr.style.background = 'color-mix(in srgb,var(--gold) 18%,var(--surface))';
+      setTimeout(function(){ hdr.style.background = ''; }, 700);
+    }
+  });
+})();
+
+// ── SIDEBAR COLLAPSE ──────────────────────────────────────────────────────────
+(function() {
+  var sidebar = document.getElementById('sidebar');
+  var toggle  = document.getElementById('sidebar-toggle');
+  var label   = document.getElementById('sidebar-collapsed-label');
+  function setCollapsed(val) {
+    if (val) { sidebar.classList.add('collapsed'); toggle.innerHTML = '&#8250; Expand'; toggle.title = 'Expand sidebar'; }
+    else      { sidebar.classList.remove('collapsed'); toggle.innerHTML = '&#8249; Collapse'; toggle.title = 'Collapse sidebar'; }
+    try { localStorage.setItem('roc_sidebar_col', val ? '1' : '0'); } catch(e) {}
+  }
+  try { if (localStorage.getItem('roc_sidebar_col') === '1') setCollapsed(true); } catch(e) {}
+  toggle.addEventListener('click', function() { setCollapsed(!sidebar.classList.contains('collapsed')); });
+  label.addEventListener('click', function() { setCollapsed(false); });
+})();
+
+// ── MOBILE ────────────────────────────────────────────────────────────────────
+(function() {
+  var sidebar    = document.getElementById('sidebar');
+  var backdrop   = document.getElementById('sidebar-backdrop');
+  var toggleBtn  = document.getElementById('mobile-sidebar-btn');
+  var themeMob   = document.getElementById('theme-btn-mobile');
+  var gameMob    = document.getElementById('game-btn-mobile');
+  var gameBtn    = document.getElementById('game-btn');
+  var themeBtn   = document.getElementById('theme-btn');
+  function openSidebar()  { sidebar.classList.add('mobile-open'); backdrop.classList.add('active'); if(toggleBtn){toggleBtn.classList.add('active');toggleBtn.textContent='✕ Close';} }
+  function closeSidebar() { sidebar.classList.remove('mobile-open'); backdrop.classList.remove('active'); if(toggleBtn){toggleBtn.classList.remove('active');toggleBtn.textContent='☰ Progress';} }
+  if (toggleBtn) toggleBtn.addEventListener('click', function() { sidebar.classList.contains('mobile-open') ? closeSidebar() : openSidebar(); });
+  if (backdrop)  backdrop.addEventListener('click', closeSidebar);
+  if (themeMob && themeBtn) themeMob.addEventListener('click', function() { themeBtn.click(); });
+  if (gameMob && gameBtn)   gameMob.addEventListener('click',  function() { gameBtn.click(); });
+  document.addEventListener('click', function(e) { if (window.innerWidth > 700) return; if (e.target.closest('.tracker-item')) closeSidebar(); });
+})();
+
 // ── WELCOME PAGE ──────────────────────────────────────────────────────────────
 (function() {
   var ov = document.getElementById('welcome-overlay');
-  var sb = document.getElementById('welcome-start-btn');
-  var sk = document.getElementById('welcome-skip-btn');
-  function dismiss() { ov.classList.add('hidden'); setTimeout(function(){ ov.style.display='none'; }, 520); }
+  function dismiss(cb) {
+    ov.classList.add('hidden');
+    setTimeout(function() { ov.style.display = 'none'; if (cb) cb(); }, 300);
+  }
   function loadStats() {
     try {
       var sc = JSON.parse(localStorage.getItem('roc_trainer_v1') || '{}').scores || {};
       var keys = Object.keys(sc), done = keys.length;
-      var mastered = keys.filter(function(k){ return sc[k].best>=80; }).length;
-      var avg = done ? Math.round(keys.reduce(function(s,k){ return s+sc[k].best; },0)/done) : null;
+      var mastered = keys.filter(function(k){ return sc[k].best >= 80; }).length;
+      var avg = done ? Math.round(keys.reduce(function(s,k){ return s + sc[k].best; }, 0) / done) : null;
       document.getElementById('w-done').textContent = done;
       document.getElementById('w-mastered').textContent = mastered;
       var el = document.getElementById('w-avg');
-      el.textContent = avg!==null ? avg+'%' : '—';
-      if (avg!==null) el.style.color = avg>=80?'var(--green)':avg>=50?'var(--amber)':'var(--red)';
+      el.textContent = avg !== null ? avg + '%' : '\u2014';
+      if (avg !== null) el.style.color = avg >= 80 ? 'var(--green)' : avg >= 50 ? 'var(--amber)' : 'var(--red)';
     } catch(e) {}
   }
-  loadStats(); sb.addEventListener('click', dismiss); sk.addEventListener('click', dismiss);
+  loadStats();
+  var r = document.getElementById('wn-recall');
+  if (r) r.addEventListener('click', function() { dismiss(); });
+  var g = document.getElementById('wn-game');
+  if (g) g.addEventListener('click', function() { dismiss(function() { var b = document.getElementById('game-btn'); if (b) b.click(); }); });
+  var p = document.getElementById('wn-progress');
+  if (p) p.addEventListener('click', function() {
+    dismiss(function() {
+      var mob = document.getElementById('mobile-sidebar-btn');
+      if (mob && window.innerWidth <= 700) { mob.click(); return; }
+      var sidebar = document.getElementById('sidebar');
+      if (sidebar && sidebar.classList.contains('collapsed')) { var t = document.getElementById('sidebar-toggle'); if (t) t.click(); }
+      var hdr = document.getElementById('sidebar-header');
+      if (hdr) { hdr.style.transition = 'background .15s'; hdr.style.background = 'color-mix(in srgb,var(--gold) 18%,var(--surface))'; setTimeout(function(){ hdr.style.background = ''; }, 600); }
+    });
+  });
+  var ref = document.getElementById('wn-reference');
+  if (ref) ref.addEventListener('click', function() { dismiss(function() { var b = document.getElementById('ref-toggle-btn'); if (b) b.click(); }); });
   document.addEventListener('keydown', function(e) {
-    if ((e.key==='Enter'||e.key==='Escape') && ov.style.display!=='none' && !ov.classList.contains('hidden')) dismiss();
+    if (e.key === 'Escape' && ov.style.display !== 'none' && !ov.classList.contains('hidden')) dismiss();
   });
 })();
 
@@ -2458,57 +2334,13 @@ updateSessionStats();
   var ob = document.getElementById('help-btn');
   var c1 = document.getElementById('help-close-btn');
   var c2 = document.getElementById('help-close-btn2');
-  function show() { ov.style.display='flex'; }
-  function hide() { ov.style.display='none'; }
-  ob.addEventListener('click', show); c1.addEventListener('click', hide); c2.addEventListener('click', hide);
-  ov.addEventListener('click', function(e){ if(e.target===ov) hide(); });
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape'&&ov.style.display==='flex') hide(); });
-})();
-
-// ── MOBILE ────────────────────────────────────────────────────────────────────
-(function() {
-  var sidebar     = document.getElementById('sidebar');
-  var backdrop    = document.getElementById('sidebar-backdrop');
-  var toggleBtn   = document.getElementById('mobile-sidebar-btn');
-  var themeMobile = document.getElementById('theme-btn-mobile');
-  var gameMobile  = document.getElementById('game-btn-mobile');
-  var gameBtn     = document.getElementById('game-btn');
-  var themeBtn    = document.getElementById('theme-btn');
-
-  function isMobile() { return window.innerWidth <= 700; }
-
-  function openSidebar() {
-    sidebar.classList.add('mobile-open');
-    backdrop.classList.add('active');
-    if (toggleBtn) { toggleBtn.classList.add('active'); toggleBtn.textContent = '✕ Close'; }
-  }
-  function closeSidebar() {
-    sidebar.classList.remove('mobile-open');
-    backdrop.classList.remove('active');
-    if (toggleBtn) { toggleBtn.classList.remove('active'); toggleBtn.textContent = '☰ Progress'; }
-  }
-
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', function() {
-      if (sidebar.classList.contains('mobile-open')) closeSidebar();
-      else openSidebar();
-    });
-  }
-  if (backdrop) backdrop.addEventListener('click', closeSidebar);
-
-  // Wire mobile theme/game buttons to the same handlers
-  if (themeMobile && themeBtn) {
-    themeMobile.addEventListener('click', function() { themeBtn.click(); });
-  }
-  if (gameMobile && gameBtn) {
-    gameMobile.addEventListener('click', function() { gameBtn.click(); });
-  }
-
-  // Close sidebar on provision navigation (mobile)
-  document.addEventListener('click', function(e) {
-    if (!isMobile()) return;
-    if (e.target.closest('.tracker-item')) closeSidebar();
-  });
+  function show() { ov.style.display = 'flex'; }
+  function hide() { ov.style.display = 'none'; }
+  if (ob) ob.addEventListener('click', show);
+  if (c1) c1.addEventListener('click', hide);
+  if (c2) c2.addEventListener('click', hide);
+  if (ov) { ov.addEventListener('click', function(e){ if(e.target===ov) hide(); }); }
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && ov && ov.style.display==='flex') hide(); });
 })();
 
 
