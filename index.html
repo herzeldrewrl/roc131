@@ -1009,6 +1009,22 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
   .rtt-cursor  { border-right: 2px solid var(--gold); animation: rtt-blink .8s step-end infinite; }
   @keyframes rtt-blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
+  /* ── REFERENCE FULLSCREEN ── */
+  #ref-panel.ref-fullscreen {
+    position: fixed;
+    inset: 0;
+    width: 100% !important;
+    min-width: 100% !important;
+    z-index: 500;
+    border-left: none;
+  }
+  #ref-panel.ref-fullscreen #ref-inner {
+    width: 100%;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  #ref-fullscreen-btn { display: flex; align-items: center; }
+
 </style>
 </head>
 <body>
@@ -1355,7 +1371,10 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
     <div id="ref-inner">
       <div id="ref-header">
         <span id="ref-header-title">Reference</span>
-        <button id="ref-close" title="Close">✕</button>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button id="ref-fullscreen-btn" title="Full screen" style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:3px 7px;cursor:pointer;font-size:.7rem;font-family:'DM Mono',monospace;">&#x26F6; Expand</button>
+          <button id="ref-close" title="Close">✕</button>
+        </div>
       </div>
       <select id="ref-rule-select"></select>
       <input id="ref-search" type="text" placeholder="Search provisions…" autocomplete="off" spellcheck="false">
@@ -2208,11 +2227,27 @@ updateSessionStats();
   function closePanel() {
     refOpen = false;
     panel.classList.remove('open');
+    panel.classList.remove('ref-fullscreen');
     toggleBtn.classList.remove('panel-open');
     toggleBtn.textContent = 'REFERENCE';
     toggleBtn.style.writingMode = 'vertical-rl';
     toggleBtn.style.padding = '14px 7px';
+    var fsBtn = document.getElementById('ref-fullscreen-btn');
+    if (fsBtn) { fsBtn.innerHTML = '&#x26F6; Expand'; }
   }
+
+  var refFullscreen = false;
+  document.getElementById('ref-fullscreen-btn').addEventListener('click', function() {
+    refFullscreen = !refFullscreen;
+    var fsBtn = document.getElementById('ref-fullscreen-btn');
+    if (refFullscreen) {
+      panel.classList.add('ref-fullscreen');
+      fsBtn.innerHTML = '&#x2715; Exit Full Screen';
+    } else {
+      panel.classList.remove('ref-fullscreen');
+      fsBtn.innerHTML = '&#x26F6; Expand';
+    }
+  });
 
   toggleBtn.addEventListener('click', () => refOpen ? closePanel() : openPanel());
   closeBtn.addEventListener('click', closePanel);
@@ -2268,6 +2303,25 @@ updateSessionStats();
     return '<span>' + s + '</span>';
   }
 
+  function highlightText(text, query) {
+    if (!query) return text;
+    // Escape special regex chars in query
+    var escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var re = new RegExp('(' + escaped + ')', 'gi');
+    return text.replace(re, '<mark style="background:color-mix(in srgb,var(--gold) 35%,transparent);color:var(--text);border-radius:2px;padding:0 1px;">$1</mark>');
+  }
+
+  function getSearchSnippet(answer, query) {
+    // Find the position of the query in the answer and return surrounding context
+    var lower = answer.toLowerCase();
+    var idx = lower.indexOf(query.toLowerCase());
+    if (idx === -1) return null;
+    var start = Math.max(0, idx - 60);
+    var end   = Math.min(answer.length, idx + query.length + 60);
+    var snippet = (start > 0 ? '\u2026' : '') + answer.slice(start, end) + (end < answer.length ? '\u2026' : '');
+    return snippet;
+  }
+
   function renderRefList() {
     listEl.innerHTML = '';
     let items;
@@ -2320,14 +2374,37 @@ updateSessionStats();
       chevron.className = 'ref-chevron';
       chevron.textContent = '▶';
       nameDiv.appendChild(chevron);
-      nameDiv.appendChild(document.createTextNode(p.section_title.replace(/\.$/, '')));
+      // Highlight query in section title if searching
+      if (searchQ) {
+        const titleSpan = document.createElement('span');
+        titleSpan.innerHTML = highlightText(p.section_title.replace(/\.$/, ''), searchQ);
+        nameDiv.appendChild(titleSpan);
+      } else {
+        nameDiv.appendChild(document.createTextNode(p.section_title.replace(/\.$/, '')));
+      }
 
       const bodyDiv = document.createElement('div');
       bodyDiv.className = 'ref-section-body';
-      bodyDiv.innerHTML = formatProvision(p.answer);
+      // Highlight query in full provision when searching
+      if (searchQ) {
+        bodyDiv.innerHTML = highlightText(formatProvision(p.answer), searchQ);
+      } else {
+        bodyDiv.innerHTML = formatProvision(p.answer);
+      }
 
       div.appendChild(titleRow);
       div.appendChild(nameDiv);
+
+      // Snippet preview below the title row when searching
+      if (searchQ && p.answer.toLowerCase().includes(searchQ.toLowerCase())) {
+        const snippet = getSearchSnippet(p.answer, searchQ);
+        if (snippet) {
+          const snipDiv = document.createElement('div');
+          snipDiv.style.cssText = 'font-size:.82rem;color:var(--muted);font-style:italic;padding:2px 14px 8px 14px;line-height:1.5;font-family:\'EB Garamond\',serif;';
+          snipDiv.innerHTML = highlightText(snippet, searchQ);
+          div.appendChild(snipDiv);
+        }
+      }
       div.appendChild(bodyDiv);
 
       // Click: expand/collapse provision text
