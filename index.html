@@ -1065,6 +1065,16 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
               <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gold-dim);letter-spacing:.07em;text-transform:uppercase;">Practice</span>
               <span style="font-family:'EB Garamond',serif;font-size:.8rem;color:var(--muted);font-style:italic;line-height:1.3;">Read &amp; retype until it sticks</span>
             </button>
+            <button class="wn-feat-btn" id="wn-title-recall" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;background:var(--bg);border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:border-color .15s,background .15s;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dim)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gold-dim);letter-spacing:.07em;text-transform:uppercase;">Title Recall</span>
+              <span style="font-family:'EB Garamond',serif;font-size:.8rem;color:var(--muted);font-style:italic;line-height:1.3;">Name the section from its number</span>
+            </button>
+            <button class="wn-feat-btn" id="wn-quiz" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;background:var(--bg);border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:border-color .15s,background .15s;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dim)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+              <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gold-dim);letter-spacing:.07em;text-transform:uppercase;">Quiz</span>
+              <span style="font-family:'EB Garamond',serif;font-size:.8rem;color:var(--muted);font-style:italic;line-height:1.3;">Multiple-choice across all provisions</span>
+            </button>
             <button class="wn-feat-btn" id="wn-game" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;background:var(--bg);border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:border-color .15s,background .15s;">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dim)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
               <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gold-dim);letter-spacing:.07em;text-transform:uppercase;">Game</span>
@@ -1096,10 +1106,12 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;"><div><div style="font-family:'DM Mono',monospace;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dim);">Rules of Court</div><div style="font-size:1.3rem;font-weight:600;color:var(--text);margin-top:2px;">Recall Trainer</div><div style="font-family:'DM Mono',monospace;font-size:.56rem;color:var(--muted);opacity:.35;letter-spacing:.12em;text-transform:uppercase;margin-top:3px;">DrewRL</div></div><button id="help-close-btn" style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:0;line-height:1;">&#10005;</button></div>
       <div style="height:1px;background:var(--border);"></div>
       <div style="display:flex;flex-direction:column;">
-        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">01</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>Type the provision from memory.</strong> Scored word-by-word, 0&#8211;100%.<span style="display:block;font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);margin-top:3px;">Ctrl+Enter to submit &nbsp;&#183;&nbsp; &#128161; Clue &nbsp;&#183;&nbsp; Peek Answer</span></div></div>
-        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">02</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>See your score instantly.</strong> Matched words green, missed words red.</div></div>
-        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">03</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>Drill weak spots.</strong> Filter sidebar by Wrong, Right, or Unseen. Progress saves automatically.</div></div>
-        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">04</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>&#9889; Game modes:</strong> <em style="color:var(--gold-dim);font-style:normal;">Easy</em> (multiple choice), <em style="color:var(--gold-dim);font-style:normal;">Hard</em> (type numbers), <em style="color:var(--gold-dim);font-style:normal;">Arrange</em> (drag to order), <em style="color:var(--gold-dim);font-style:normal;">Fill Blanks</em> (complete the provision).</div></div>
+        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">01</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>Practice Mode.</strong> Given a section title, type the full provision from memory. AI scores you 0–100 word-by-word, highlights what you missed, and gives a study tip.<span style="display:block;font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);margin-top:3px;">Ctrl+Enter to submit &nbsp;·&nbsp; &#128161; Clue &nbsp;·&nbsp; Peek Answer</span></div></div>
+        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">02</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>Title Recall.</strong> Given a section number, name the section title from memory. A sidebar tracks which sections you've got right — titles stay hidden until you get them correct.</div></div>
+        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">03</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>Quiz.</strong> Multiple-choice questions drawn from all 271 provisions. Tests recognition of exact text, definitions, and legal effects.</div></div>
+        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">04</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>Flashcards.</strong> Flip through provisions with a spaced-repetition feel. Use with the sidebar filter to focus on weak or unseen sections.</div></div>
+        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;border-bottom:1px solid var(--border);"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">05</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>&#9889; Game modes.</strong> <em style="color:var(--gold-dim);font-style:normal;">Easy</em> (multiple choice), <em style="color:var(--gold-dim);font-style:normal;">Hard</em> (type section numbers), <em style="color:var(--gold-dim);font-style:normal;">Arrange</em> (drag to order), <em style="color:var(--gold-dim);font-style:normal;">Fill Blanks</em> (complete the provision).</div></div>
+        <div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;padding:8px 0;"><div style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);text-align:right;">06</div><div style="font-size:.88rem;line-height:1.55;color:var(--text);"><strong>Progress sidebar.</strong> Filter by Wrong, Right, or Unseen. Scores save automatically in this browser. Use the ⋯ menu to access all modes.</div></div>
       </div>
       <div style="display:flex;justify-content:flex-end;"><button id="help-close-btn2" style="background:var(--gold);color:#0e0d0b;font-family:'DM Mono',monospace;font-size:.76rem;font-weight:500;border:none;border-radius:5px;padding:9px 24px;cursor:pointer;">Got it &#8594;</button></div>
     </div>
@@ -1120,26 +1132,32 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
         <div class="ob-step">
           <div class="ob-step-num">01</div>
           <div class="ob-step-body">
-            <strong>Type the provision from memory.</strong> You're given a section title — write out the rule as accurately as you can. Substance counts more than exact wording.
-            <span class="ob-note">Ctrl + Enter to submit &nbsp;·&nbsp; Peek Answer if you're stuck</span>
+            <strong>Practice Mode.</strong> You're given a section title — type the full provision from memory. AI grades your answer 0–100, shows what you missed, and gives a study tip.
+            <span class="ob-note">Ctrl + Enter to submit &nbsp;·&nbsp; Peek Answer if you're stuck &nbsp;·&nbsp; 💡 Clue for a hint</span>
           </div>
         </div>
         <div class="ob-step">
           <div class="ob-step-num">02</div>
           <div class="ob-step-body">
-            <strong>Receive a score and feedback.</strong> AI grades your answer 0–100, flags what you missed, shows the correct provision, and gives a targeted study tip.
+            <strong>Title Recall.</strong> Given a section number, name the section title from memory. A sidebar tracks every section in the rule — titles stay hidden until you get them right.
           </div>
         </div>
         <div class="ob-step">
           <div class="ob-step-num">03</div>
           <div class="ob-step-body">
-            <strong>Try Again or advance.</strong> Retry the same provision until you're satisfied, or move forward with Next. Use Clue for a memory hint before answering.
+            <strong>Quiz.</strong> Multiple-choice questions drawn from all 271 provisions — tests recognition of exact text, definitions, and legal effects.
           </div>
         </div>
         <div class="ob-step">
           <div class="ob-step-num">04</div>
           <div class="ob-step-body">
-            <strong>Use the sidebar to drill weak spots.</strong> Filter by Wrong, Right, or Unseen. Shuffle for random order. Progress saves automatically in this browser.
+            <strong>Game modes &amp; Flashcards.</strong> ⚡ Easy, Hard, Arrange, and Fill Blanks game modes. Flip flashcards for quick review. All accessible from the ⋯ menu.
+          </div>
+        </div>
+        <div class="ob-step">
+          <div class="ob-step-num">05</div>
+          <div class="ob-step-body">
+            <strong>Progress sidebar.</strong> Filter by Wrong, Right, or Unseen. Drill weak spots. Scores save automatically in this browser.
           </div>
         </div>
       </div>
@@ -1205,9 +1223,6 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
         <div style="position:relative;" id="more-menu-wrap">
           <button id="more-btn" style="background:var(--surface);color:var(--muted);border:1px solid var(--border);border-radius:5px;padding:5px 10px;font-family:'DM Mono',monospace;font-size:.7rem;cursor:pointer;" title="More">&#8943;</button>
           <div id="more-dropdown" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--surface);border:1px solid var(--border);border-radius:7px;min-width:160px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.25);overflow:hidden;">
-            <button class="more-item" id="quiz-btn" style="display:flex;align-items:center;gap:8px;width:100%;padding:10px 14px;background:none;border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.68rem;cursor:pointer;text-align:left;">
-              <span>&#10067;</span> Quiz
-            </button>
             <button class="more-item" id="quiz-btn" style="display:flex;align-items:center;gap:8px;width:100%;padding:10px 14px;background:none;border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.68rem;cursor:pointer;text-align:left;">
               <span>&#9673;</span> Quiz
             </button>
@@ -1554,8 +1569,17 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
     </div>
 
     <!-- Body -->
-    <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:32px 20px;overflow-y:auto;">
-      <div style="width:100%;max-width:560px;display:flex;flex-direction:column;gap:20px;">
+    <div style="flex:1;display:flex;overflow:hidden;">
+
+      <!-- Sidebar: section progress list -->
+      <div id="tr-sidebar" style="width:188px;flex-shrink:0;border-right:1px solid var(--border);overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:3px;background:var(--surface);">
+        <div style="font-family:'DM Mono',monospace;font-size:.56rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;padding-left:2px;">Sections</div>
+        <div id="tr-section-chips" style="display:flex;flex-direction:column;gap:3px;"></div>
+      </div>
+
+      <!-- Main quiz area -->
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:32px 20px;overflow-y:auto;">
+      <div style="width:100%;max-width:480px;display:flex;flex-direction:column;gap:20px;">
 
         <!-- Rule label -->
         <div id="tr-rule-label" style="font-family:'DM Mono',monospace;font-size:.65rem;color:var(--gold-dim);letter-spacing:.08em;text-transform:uppercase;text-align:center;"></div>
@@ -1591,8 +1615,9 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
         </div>
 
       </div>
-    </div>
-  </div>
+      </div><!-- end main quiz area -->
+    </div><!-- end body flex wrapper -->
+  </div><!-- end overlay -->
 
   <!-- ── PRACTICE MODE ── -->
   <div id="practice-overlay">
@@ -3067,6 +3092,8 @@ updateSessionStats();
   var wr=document.getElementById('wn-reference');if(wr)wr.addEventListener('click',function(){dismiss(function(){var b=document.getElementById('ref-toggle-btn');if(b)b.click();});});
   var wc=document.getElementById('wn-cards');if(wc)wc.addEventListener('click',function(){dismiss(function(){var b=document.getElementById('flash-btn');if(b)b.click();});});
   var wprac=document.getElementById('wn-practice');if(wprac)wprac.addEventListener('click',function(){dismiss(function(){var b=document.getElementById('practice-btn');if(b)b.click();});});
+  var wtr=document.getElementById('wn-title-recall');if(wtr)wtr.addEventListener('click',function(){dismiss(function(){var b=document.getElementById('title-recall-btn');if(b)b.click();});});
+  var wqz=document.getElementById('wn-quiz');if(wqz)wqz.addEventListener('click',function(){dismiss(function(){var b=document.getElementById('quiz-btn');if(b)b.click();});});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ov.style.display!=='none'&&!ov.classList.contains('hidden'))dismiss();});
 })();
 
@@ -3731,6 +3758,43 @@ updateSessionStats();
   var sections = [];
   var trPos    = 0;
   var trCorrect = 0, trWrong = 0;
+  var sectionStates = []; // 'pending' | 'correct' | 'wrong'
+
+  function renderSidebar() {
+    var chips = document.getElementById('tr-section-chips');
+    if (!chips) return;
+    chips.innerHTML = '';
+    sections.forEach(function(s, i) {
+      var state = sectionStates[i] || 'pending';
+      var isCurrent = i === trPos;
+      var chip = document.createElement('div');
+      chip.style.cssText = [
+        'display:flex;align-items:center;gap:6px;',
+        'padding:5px 7px;border-radius:5px;cursor:pointer;',
+        'font-family:\'DM Mono\',monospace;font-size:.6rem;line-height:1.3;',
+        'border:1px solid;',
+        isCurrent
+          ? 'border-color:var(--gold);background:color-mix(in srgb,var(--gold) 10%,transparent);color:var(--text);font-weight:600;'
+          : state === 'correct'
+            ? 'border-color:var(--green);background:color-mix(in srgb,var(--green) 10%,transparent);color:var(--green);'
+            : state === 'wrong'
+              ? 'border-color:var(--red);background:color-mix(in srgb,var(--red) 8%,transparent);color:var(--muted);'
+              : 'border-color:var(--border);background:transparent;color:var(--muted);'
+      ].join('');
+
+      var title = s.p.section_title.replace(/\.$/, '');
+      var icon = state === 'correct' ? '✓ ' : state === 'wrong' ? '✗ ' : '';
+      chip.textContent = state === 'correct'
+        ? icon + '§' + s.p.section + ' ' + title
+        : state === 'wrong'
+          ? '✗ §' + s.p.section
+          : '§' + s.p.section;
+      chip.title = state === 'correct' ? title : '§' + s.p.section;
+
+      (function(idx){ chip.addEventListener('click', function() { loadSection(idx); }); })(i);
+      chips.appendChild(chip);
+    });
+  }
 
   // Build rule dropdown
   var rules = [];
@@ -3744,6 +3808,7 @@ updateSessionStats();
 
   function loadRule(ruleNum) {
     sections = PROMPTS.map(function(p, i){ return {p:p, i:i}; }).filter(function(x){ return x.p.rule === ruleNum; });
+    sectionStates = sections.map(function(){ return 'pending'; });
     trPos = 0; trCorrect = 0; trWrong = 0;
     if (correctCt) correctCt.textContent = '0';
     if (wrongCt)   wrongCt.textContent   = '0';
@@ -3758,13 +3823,21 @@ updateSessionStats();
     var s = sections[idx];
     if (!s) return;
     if (secNum)   secNum.textContent   = s.p.section;
+    if (secNum)   secNum.style.color   = 'var(--text)';
     if (posEl)    posEl.textContent    = idx + 1;
     if (progFill) progFill.style.width = ((idx + 1) / sections.length * 100).toFixed(1) + '%';
     input.value   = '';
     input.disabled = false;
+    input.style.display    = '';
     input.style.borderColor = 'var(--border)';
     result.style.display    = 'none';
     checkBtn.style.display  = '';
+    renderSidebar();
+    // Scroll active chip into view
+    var chips = document.getElementById('tr-section-chips');
+    if (chips && chips.children[idx]) {
+      chips.children[idx].scrollIntoView({block:'nearest', behavior:'smooth'});
+    }
     input.focus();
   }
 
@@ -3794,16 +3867,19 @@ updateSessionStats();
 
     if (isCorrect) {
       trCorrect++;
+      sectionStates[trPos] = 'correct';
       badge.textContent = '\u2713 Correct!';
       badge.style.cssText = 'text-align:center;font-size:1.1rem;font-weight:600;padding:12px;border-radius:6px;border:1px solid var(--green);background:color-mix(in srgb,var(--green) 12%,transparent);color:var(--green);';
       correctAns.textContent = correct;
     } else if (partial) {
       trCorrect++;
+      sectionStates[trPos] = 'correct';
       badge.textContent = '\u2248 Close enough — ' + correct;
       badge.style.cssText = 'text-align:center;font-size:1rem;font-weight:600;padding:12px;border-radius:6px;border:1px solid var(--amber);background:color-mix(in srgb,var(--amber) 12%,transparent);color:var(--amber);';
       correctAns.textContent = 'You typed: ' + guess;
     } else {
       trWrong++;
+      sectionStates[trPos] = 'wrong';
       badge.textContent = '\u2717 Correct title: ' + correct;
       badge.style.cssText = 'text-align:center;font-size:1rem;font-weight:600;padding:12px;border-radius:6px;border:1px solid var(--red);background:color-mix(in srgb,var(--red) 10%,transparent);color:var(--text);';
       correctAns.textContent = 'You typed: ' + guess;
@@ -3811,6 +3887,7 @@ updateSessionStats();
 
     if (correctCt) correctCt.textContent = trCorrect;
     if (wrongCt)   wrongCt.textContent   = trWrong;
+    renderSidebar();
   }
 
   checkBtn.addEventListener('click', check);
