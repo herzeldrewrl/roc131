@@ -1402,6 +1402,21 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
       </div>
       <select id="ref-rule-select"></select>
       <input id="ref-search" type="text" placeholder="Search provisions…" autocomplete="off" spellcheck="false">
+
+      <!-- Rule length ranking -->
+      <div id="ref-ranking-wrap" style="margin:8px 0 4px;">
+        <button id="ref-ranking-toggle" style="width:100%;background:transparent;border:1px solid var(--border);border-radius:4px;padding:6px 10px;font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:space-between;letter-spacing:.06em;text-transform:uppercase;transition:border-color .15s;">
+          <span>Rules by Length</span>
+          <span id="ref-ranking-chevron">&#8964;</span>
+        </button>
+        <div id="ref-ranking-list" style="display:none;border:1px solid var(--border);border-top:none;border-radius:0 0 4px 4px;background:var(--surface);overflow:hidden;">
+          <div style="font-family:'DM Mono',monospace;font-size:.55rem;color:var(--muted);padding:6px 10px 4px;display:grid;grid-template-columns:18px 28px 1fr 44px;gap:0 6px;letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--border);">
+            <span>#</span><span>Rule</span><span>Title</span><span style="text-align:right;">Chars</span>
+          </div>
+          <div id="ref-ranking-rows" style="max-height:320px;overflow-y:auto;"></div>
+        </div>
+      </div>
+
       <div id="ref-list"></div>
     </div>
   </div>
@@ -2438,6 +2453,60 @@ updateSessionStats();
     toggleBtn.style.padding = '10px 8px';
     renderRefList();
   }
+
+  // ── Rule length ranking ──
+  (function() {
+    const rankData = {};
+    PROMPTS.forEach(function(p) {
+      if (!rankData[p.rule]) rankData[p.rule] = { title: p.rule_title, chars: 0, sections: 0 };
+      rankData[p.rule].chars += p.answer.length;
+      rankData[p.rule].sections += 1;
+    });
+    const ranked = Object.entries(rankData).sort((a, b) => b[1].chars - a[1].chars);
+    const maxChars = ranked[0][1].chars;
+
+    const rowsEl = document.getElementById('ref-ranking-rows');
+    ranked.forEach(function([rule, data], i) {
+      const pct = (data.chars / maxChars * 100).toFixed(0);
+      const row = document.createElement('div');
+      row.style.cssText = 'padding:5px 10px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;';
+      row.innerHTML = `
+        <div style="display:grid;grid-template-columns:18px 28px 1fr 44px;gap:0 6px;align-items:center;font-family:'DM Mono',monospace;font-size:.58rem;">
+          <span style="color:var(--muted);">${i+1}</span>
+          <span style="color:var(--gold-dim);font-weight:600;">R${rule}</span>
+          <span style="color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${data.title}">${data.title}</span>
+          <span style="color:var(--muted);text-align:right;">${(data.chars/1000).toFixed(1)}k</span>
+        </div>
+        <div style="margin-top:3px;height:2px;background:var(--border);border-radius:1px;">
+          <div style="height:100%;width:${pct}%;background:var(--gold-dim);border-radius:1px;opacity:.7;"></div>
+        </div>`;
+      row.addEventListener('mouseenter', function() { row.style.background = 'color-mix(in srgb,var(--gold) 5%,transparent)'; });
+      row.addEventListener('mouseleave', function() { row.style.background = ''; });
+      row.addEventListener('click', function() {
+        refRule = rule;
+        ruleSelEl.value = rule;
+        searchEl.value = ''; searchQ = '';
+        renderRefList();
+        // close ranking
+        rankList.style.display = 'none';
+        chevron.textContent = '⌄';
+        // scroll ref-list into view
+        document.getElementById('ref-list').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      rowsEl.appendChild(row);
+    });
+
+    const toggle = document.getElementById('ref-ranking-toggle');
+    const rankList = document.getElementById('ref-ranking-list');
+    const chevron = document.getElementById('ref-ranking-chevron');
+    toggle.addEventListener('click', function() {
+      const open = rankList.style.display !== 'none';
+      rankList.style.display = open ? 'none' : 'block';
+      chevron.textContent = open ? '⌄' : '⌃';
+      toggle.style.borderBottomLeftRadius = open ? '4px' : '0';
+      toggle.style.borderBottomRightRadius = open ? '4px' : '0';
+    });
+  })();
   function closePanel() {
     refOpen = false;
     panel.classList.remove('open');
