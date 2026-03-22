@@ -2818,6 +2818,10 @@ updateSessionStats();
     if (both) { gCorrect++; gStreak++; }
     else       { gStreak = 0; }
 
+    // Mark this prompt as seen so the Studied Only filter can track it
+    if (!scores[correctIdx]) scores[correctIdx] = { best: 0, attempts: 1 };
+    else scores[correctIdx].attempts++;
+
     gsCorrect.textContent = gCorrect;
     gsPlayed.textContent  = gPlayed;
     gsStreak.textContent  = gStreak;
@@ -4009,13 +4013,22 @@ updateSessionStats();
       btn.addEventListener('mouseleave', function() {
         if (!btn.disabled) btn.style.borderColor = 'var(--border)';
       });
-      btn.addEventListener('click', function() { answer(choice, q.a, choices); });
+      btn.addEventListener('click', function() { answer(choice, q.a, choices, q); });
       choicesEl.appendChild(btn);
     });
   }
 
-  function answer(chosen, correct_ans, choices) {
+  function answer(chosen, correct_ans, choices, q) {
     var isCorrect = chosen === correct_ans;
+
+    // Mark the corresponding prompt as seen for the Studied Only filter
+    var srcMatch = q && q.src && q.src.match(/Rule\s+(\d+)[^§]*§\s*(\d+)/i);
+    if (srcMatch) {
+      var ruleNum = srcMatch[1], secNum = parseInt(srcMatch[2]);
+      var pi = PROMPTS.findIndex(function(p) { return p.rule === ruleNum && p.section === secNum; });
+      if (pi >= 0 && !scores[pi]) scores[pi] = { best: 0, attempts: 1 };
+      else if (pi >= 0) scores[pi].attempts++;
+    }
 
     // Disable all buttons + color them
     Array.from(choicesEl.children).forEach(function(btn) {
