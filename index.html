@@ -1045,6 +1045,46 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
   }
   #ref-fullscreen-btn { display: flex; align-items: center; }
 
+
+  /* ── SECTION QUIZ PANEL (Practice Mode) ── */
+  #section-quiz-pane {
+    display: none; flex-direction: column; gap: 16px; padding: 20px;
+    overflow-y: auto; flex: 1; border-left: 1px solid var(--border);
+    background: var(--bg);
+  }
+  #section-quiz-pane.active { display: flex; }
+  .sq-header { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+  .sq-title { font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); flex:1; }
+  .sq-back-btn { background:transparent; border:1px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:.65rem; padding:5px 12px; border-radius:4px; cursor:pointer; transition:color .15s,border-color .15s; }
+  .sq-back-btn:hover { color:var(--text); border-color:var(--gold-dim); }
+  .sq-progress-wrap { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+  .sq-progress-bar { flex:1; height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+  .sq-progress-fill { height:100%; background:var(--gold); transition:width .3s ease; border-radius:2px; }
+  .sq-pos-label { font-family:'DM Mono',monospace; font-size:.62rem; color:var(--muted); white-space:nowrap; }
+  .sq-stats { display:flex; gap:14px; font-family:'DM Mono',monospace; font-size:.62rem; color:var(--muted); }
+  .sq-stats .sq-c { color:var(--green); font-weight:600; }
+  .sq-stats .sq-w { color:var(--red); font-weight:600; }
+  .sq-source { font-family:'DM Mono',monospace; font-size:.6rem; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; text-align:center; flex-shrink:0; }
+  .sq-question { font-family:'EB Garamond',Georgia,serif; font-size:1.1rem; line-height:1.65; color:var(--text); font-weight:600; text-align:center; padding:0 4px; flex-shrink:0; }
+  .sq-choices { display:flex; flex-direction:column; gap:9px; }
+  .sq-choice { width:100%; padding:13px 16px; background:var(--surface); border:1.5px solid var(--border); border-radius:7px; color:var(--text); font-family:'EB Garamond',Georgia,serif; font-size:.98rem; cursor:pointer; text-align:left; transition:border-color .12s,background .12s; line-height:1.45; }
+  .sq-choice:hover:not(:disabled) { border-color:var(--gold-dim); background:color-mix(in srgb,var(--gold) 6%,transparent); }
+  .sq-choice.sq-correct { border-color:var(--green); background:color-mix(in srgb,var(--green) 12%,transparent); color:var(--green); font-weight:500; }
+  .sq-choice.sq-wrong { border-color:var(--red); background:color-mix(in srgb,var(--red) 10%,transparent); color:var(--red); opacity:.7; }
+  .sq-result { padding:11px 16px; border-radius:7px; border:1px solid; font-family:'DM Mono',monospace; font-size:.72rem; text-align:center; line-height:1.6; display:none; flex-shrink:0; }
+  .sq-result.sq-ok  { border-color:var(--green); background:color-mix(in srgb,var(--green) 10%,transparent); color:var(--green); }
+  .sq-result.sq-bad { border-color:var(--red);   background:color-mix(in srgb,var(--red) 8%,transparent);   color:var(--text); }
+  .sq-next-btn { display:none; background:var(--gold); color:#0e0d0b; font-family:'DM Mono',monospace; font-size:.72rem; font-weight:600; border:none; border-radius:6px; padding:12px 0; width:100%; cursor:pointer; transition:opacity .15s; letter-spacing:.04em; flex-shrink:0; }
+  .sq-next-btn:hover { opacity:.87; }
+  .sq-summary { display:none; flex-direction:column; align-items:center; gap:14px; padding:16px 0; flex-shrink:0; }
+  .sq-sum-title { font-family:'EB Garamond',Georgia,serif; font-size:1.2rem; color:var(--text); font-weight:600; }
+  .sq-sum-score { font-family:'DM Mono',monospace; font-size:2rem; font-weight:500; color:var(--gold); }
+  .sq-sum-detail { font-family:'DM Mono',monospace; font-size:.68rem; color:var(--muted); }
+  .sq-loading { display:flex; flex-direction:column; align-items:center; gap:12px; padding:40px 0; color:var(--muted); font-family:'DM Mono',monospace; font-size:.72rem; }
+  .sq-loading-spinner { width:24px; height:24px; border:2px solid var(--border); border-top-color:var(--gold); border-radius:50%; animation:spin .8s linear infinite; }
+  #pr-test-me-btn { background:var(--gold); color:#0e0d0b; font-family:'DM Mono',monospace; font-size:.65rem; font-weight:600; border:none; border-radius:5px; padding:6px 14px; cursor:pointer; transition:opacity .15s; white-space:nowrap; flex-shrink:0; }
+  #pr-test-me-btn:hover { opacity:.87; }
+
 </style>
 </head>
 <body>
@@ -1676,7 +1716,7 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
         </div>
         <!-- RIGHT: provision -->
         <div id="practice-right">
-          <div id="practice-right-label">Provision (read &amp; retype)</div>
+          <div id="practice-right-label" style="display:flex;align-items:center;justify-content:space-between;flex-shrink:0;"><span>Provision (read &amp; retype)</span><button id="pr-test-me-btn">&#9654; Test Me</button></div>
           <div id="pr-right-title" style="margin-bottom:8px;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;">
               <div id="pr-right-rule" style="font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gold-dim);letter-spacing:.07em;text-transform:uppercase;"></div>
@@ -1685,6 +1725,36 @@ kbd{background:var(--border);border-radius:3px;padding:1px 4px;font-size:.7rem;}
             <div id="pr-right-section" style="font-family:'EB Garamond',Georgia,serif;font-size:1.1rem;font-weight:600;color:var(--text);line-height:1.2;"></div>
           </div>
           <div id="practice-provision-text"></div>
+        </div>
+
+        <!-- SECTION QUIZ PANE -->
+        <div id="section-quiz-pane">
+          <div class="sq-header">
+            <div class="sq-title">&#9673; Section Quiz</div>
+            <div class="sq-stats">&#10003; <span class="sq-c" id="sq-correct">0</span>&nbsp;&nbsp;&#10007; <span class="sq-w" id="sq-wrong">0</span></div>
+            <button class="sq-back-btn" id="sq-back-btn">&#8592; Back</button>
+          </div>
+          <div class="sq-progress-wrap">
+            <div class="sq-progress-bar"><div class="sq-progress-fill" id="sq-prog-fill" style="width:0%"></div></div>
+            <div class="sq-pos-label" id="sq-pos-label">1 / 10</div>
+          </div>
+          <div class="sq-loading" id="sq-loading">
+            <div class="sq-loading-spinner"></div>
+            <span>Generating questions&hellip;</span>
+          </div>
+          <div id="sq-question-area" style="display:none;flex-direction:column;gap:14px;">
+            <div class="sq-source" id="sq-source"></div>
+            <div class="sq-question" id="sq-question"></div>
+            <div class="sq-choices" id="sq-choices"></div>
+            <div class="sq-result" id="sq-result"></div>
+            <button class="sq-next-btn" id="sq-next-btn">Next &rarr;</button>
+          </div>
+          <div class="sq-summary" id="sq-summary">
+            <div class="sq-sum-title">Session complete!</div>
+            <div class="sq-sum-score" id="sq-sum-score">0/10</div>
+            <div class="sq-sum-detail" id="sq-sum-detail"></div>
+            <button style="background:var(--gold);color:#0e0d0b;font-family:'DM Mono',monospace;font-size:.72rem;font-weight:600;border:none;border-radius:5px;padding:10px 28px;cursor:pointer;margin-top:4px;" id="sq-retry-btn">Retry &rarr;</button>
+          </div>
         </div>
       </div>
 
@@ -3774,6 +3844,13 @@ updateSessionStats();
     if (ov2) { ov2.classList.add('hidden'); setTimeout(function(){ ov2.style.display='none'; open(); }, 300); }
     else open();
   });
+
+  // Expose hook so the section quiz can know when the section changes
+  var _origLoadPractice = loadPractice;
+  loadPractice = function(idx) {
+    _origLoadPractice(idx);
+    if (typeof window.onPracticeLoad === 'function') window.onPracticeLoad(idx);
+  };
 })();
 
 // ── MORE MENU ─────────────────────────────────────────────────────────────────
@@ -4278,6 +4355,197 @@ updateSessionStats();
   closeBtn.addEventListener('click', close);
 })();
 
+
+
+// ── SECTION QUIZ (Practice Mode) ─────────────────────────────────────────────
+(function() {
+  var testMeBtn    = document.getElementById('pr-test-me-btn');
+  var sqPane       = document.getElementById('section-quiz-pane');
+  var rightPane    = document.getElementById('practice-right');
+  var backBtn      = document.getElementById('sq-back-btn');
+  var loadingEl    = document.getElementById('sq-loading');
+  var questionArea = document.getElementById('sq-question-area');
+  var summaryEl    = document.getElementById('sq-summary');
+  var sourceEl     = document.getElementById('sq-source');
+  var questionEl   = document.getElementById('sq-question');
+  var choicesEl    = document.getElementById('sq-choices');
+  var resultEl     = document.getElementById('sq-result');
+  var nextBtn      = document.getElementById('sq-next-btn');
+  var retryBtn     = document.getElementById('sq-retry-btn');
+  var posLabel     = document.getElementById('sq-pos-label');
+  var progFill     = document.getElementById('sq-prog-fill');
+  var correctEl    = document.getElementById('sq-correct');
+  var wrongEl      = document.getElementById('sq-wrong');
+  var sumScore     = document.getElementById('sq-sum-score');
+  var sumDetail    = document.getElementById('sq-sum-detail');
+
+  var sqDeck = [], sqPos = 0, sqCorrect = 0, sqWrong = 0;
+  var TARGET = 10;
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function getBankQuestionsForSection(ruleNum, secNum) {
+    // Strictly section-specific only — no rule-wide fallback
+    var exact = QUIZ_BANK.filter(function(q) {
+      var m = q.src.match(/Rule\s+(\d+)[^§]*§\s*(\d+)/i);
+      return m && m[1] === String(ruleNum) && parseInt(m[2]) === secNum;
+    });
+    var seen = {}, unique = [];
+    exact.forEach(function(q) {
+      if (!seen[q.q]) { seen[q.q] = true; unique.push(q); }
+    });
+    return unique;
+  }
+
+  function buildDeck(p) {
+    // Reset UI
+    loadingEl.style.display    = 'none';
+    questionArea.style.display = 'none';
+    summaryEl.style.display    = 'none';
+    resultEl.style.display     = 'none';
+    nextBtn.style.display      = 'none';
+    sqPos = sqCorrect = sqWrong = 0;
+    if (correctEl) correctEl.textContent = '0';
+    if (wrongEl)   wrongEl.textContent   = '0';
+
+    // Use quiz bank exclusively — section-specific questions only, no AI
+    var bankQs = shuffle(getBankQuestionsForSection(p.rule, p.section));
+    var combined = [], seen = {};
+    bankQs.forEach(function(q) {
+      var k = q.q.trim().toLowerCase();
+      if (!seen[k]) { seen[k] = true; combined.push(q); }
+    });
+    sqDeck = shuffle(combined).slice(0, TARGET);
+
+    questionArea.style.display    = 'flex';
+    questionArea.style.flexDirection = 'column';
+    summaryEl.style.display       = 'none';
+    loadQ(0);
+  }
+
+  function loadQ(idx) {
+    sqPos = idx;
+    var q = sqDeck[idx];
+    posLabel.textContent   = (idx + 1) + ' / ' + sqDeck.length;
+    progFill.style.width   = (idx / sqDeck.length * 100).toFixed(1) + '%';
+    sourceEl.textContent   = q.src || '';
+    questionEl.textContent = q.q;
+    resultEl.style.display = 'none';
+    resultEl.className     = 'sq-result';
+    nextBtn.style.display  = 'none';
+
+    choicesEl.innerHTML = '';
+    var opts = (q.choices && q.choices.length >= 2) ? shuffle(q.choices)
+             : [q.a, 'None of the above', 'All of the above', 'Cannot be determined'];
+    opts.forEach(function(choice) {
+      var btn = document.createElement('button');
+      btn.className   = 'sq-choice';
+      btn.textContent = choice;
+      btn.addEventListener('click', function() { onAnswer(btn, choice, q.a); });
+      choicesEl.appendChild(btn);
+    });
+  }
+
+  function onAnswer(clickedBtn, chosen, correct) {
+    var isOk = chosen === correct;
+    if (isOk) { sqCorrect++; if (correctEl) correctEl.textContent = sqCorrect; }
+    else       { sqWrong++;  if (wrongEl)   wrongEl.textContent   = sqWrong; }
+
+    Array.from(choicesEl.children).forEach(function(btn) {
+      btn.disabled = true;
+      if (btn.textContent === correct)      btn.classList.add('sq-correct');
+      else if (btn === clickedBtn && !isOk) btn.classList.add('sq-wrong');
+    });
+
+    resultEl.style.display = 'block';
+    if (isOk) {
+      resultEl.className   = 'sq-result sq-ok';
+      resultEl.textContent = '\u2713 Correct!';
+    } else {
+      resultEl.className  = 'sq-result sq-bad';
+      resultEl.innerHTML  = '\u2717 Correct answer: <strong>' + correct + '</strong>';
+    }
+
+    if (sqPos + 1 < sqDeck.length) {
+      nextBtn.style.display = 'block';
+    } else {
+      setTimeout(showSummary, 900);
+    }
+  }
+
+  function showSummary() {
+    questionArea.style.display = 'none';
+    summaryEl.style.display    = 'flex';
+    var total = sqDeck.length;
+    sumScore.textContent = sqCorrect + ' / ' + total;
+    var pct = Math.round(sqCorrect / total * 100);
+    sumScore.style.color = pct >= 80 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : 'var(--red)';
+    sumDetail.textContent = pct + '%\u2003\u2014\u2003' +
+      (pct >= 80 ? 'Excellent!' : pct >= 60 ? 'Good work.' : pct >= 40 ? 'Keep practising.' : 'Review the provision and retry.');
+
+    // Perfect score on quiz → mark section as done (same as typing 100%)
+    if (pct === 100 && currentPracticeIdx !== null && typeof scores !== 'undefined') {
+      var idx = currentPracticeIdx;
+      var prev = scores[idx] ? scores[idx].best : 0;
+      scores[idx] = {
+        best: Math.max(100, prev),
+        attempts: (scores[idx] ? scores[idx].attempts : 0) + 1
+      };
+      if (typeof saveProgress === 'function') saveProgress();
+      if (typeof buildTrackerList === 'function') buildTrackerList();
+      if (typeof updatePrOverallStats === 'function') updatePrOverallStats();
+    }
+  }
+
+  function openQuiz() {
+    if (!currentPracticeIdx && currentPracticeIdx !== 0) return;
+    var p = PROMPTS[currentPracticeIdx];
+    if (!p) return;
+    rightPane.style.display = 'none';
+    sqPane.classList.add('active');
+    buildDeck(p);
+  }
+
+  function closeQuiz() {
+    sqPane.classList.remove('active');
+    rightPane.style.display = '';
+  }
+
+  if (testMeBtn) testMeBtn.addEventListener('click', openQuiz);
+  if (backBtn)   backBtn.addEventListener('click', closeQuiz);
+
+  nextBtn.addEventListener('click', function() {
+    if (sqPos + 1 < sqDeck.length) loadQ(sqPos + 1);
+    else showSummary();
+  });
+
+  retryBtn.addEventListener('click', function() {
+    sqDeck = shuffle(sqDeck);
+    sqPos = sqCorrect = sqWrong = 0;
+    if (correctEl) correctEl.textContent = '0';
+    if (wrongEl)   wrongEl.textContent   = '0';
+    summaryEl.style.display    = 'none';
+    questionArea.style.display = 'flex';
+    questionArea.style.flexDirection = 'column';
+    loadQ(0);
+  });
+
+  // Register onPracticeLoad — fires every time loadPractice(idx) is called
+  var currentPracticeIdx = null;
+  window.onPracticeLoad = function(idx) {
+    currentPracticeIdx = idx;
+    if (sqPane.classList.contains('active')) {
+      buildDeck(PROMPTS[idx]);
+    }
+  };
+})();
 
 </script>
 </body>
