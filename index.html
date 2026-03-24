@@ -4488,8 +4488,25 @@ updateSessionStats();
     sumScore.textContent = sqCorrect + ' / ' + total;
     var pct = Math.round(sqCorrect / total * 100);
     sumScore.style.color = pct >= 80 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : 'var(--red)';
-    sumDetail.textContent = pct + '%\u2003\u2014\u2003' +
-      (pct >= 80 ? 'Excellent!' : pct >= 60 ? 'Good work.' : pct >= 40 ? 'Keep practising.' : 'Review the provision and retry.');
+
+    var feedbackMsg = pct >= 80 ? 'Excellent!' : pct >= 60 ? 'Good work.' : pct >= 40 ? 'Keep practising.' : 'Review the provision and retry.';
+
+    // Perfect score: mark the section as done in the main scores object
+    if (pct === 100 && currentPracticePrompt) {
+      var pi = PROMPTS.indexOf(currentPracticePrompt);
+      if (pi >= 0) {
+        if (!scores[pi] || 100 > scores[pi].best) {
+          scores[pi] = { best: 100, attempts: (scores[pi] ? scores[pi].attempts : 0) + 1 };
+        } else {
+          scores[pi].attempts = (scores[pi].attempts || 0) + 1;
+        }
+        if (typeof saveProgress === 'function') saveProgress();
+        if (typeof updateSidebarStats === 'function') updateSidebarStats();
+        feedbackMsg = '🏆 Perfect! Section marked as done.';
+      }
+    }
+
+    sumDetail.textContent = pct + '%\u2003\u2014\u2003' + feedbackMsg;
   }
 
   var currentPracticePrompt = null;
